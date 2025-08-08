@@ -19,49 +19,94 @@ document.addEventListener("DOMContentLoaded", function () {
     const fieldRubberWidthInput = document.getElementById("fieldRubberWidth");
     const railHeadWidthInput = document.getElementById("railHeadWidth");
     const gageRubberWidthInput = document.getElementById("gageRubberWidth");
-    const highRadiusInput = document.getElementById("highRadius");
-    const centerRadiusInput = document.getElementById("centerRadius");
-    const lowRadiusInput = document.getElementById("lowRadius");
-    const measuredDegree = document.getElementById("measuredDegree");
-    const roundedDownDegree = document.getElementById("roundedDownDegree");
-    const roundedUpDegree = document.getElementById("roundedUpDegree");
-    const measuredR6Input = document.getElementById("r6Measured");
-    const measuredR5Input = document.getElementById("r5Measured");
-    const measuredR4Input = document.getElementById("r4Measured");
-    const measuredR3Input = document.getElementById("r3Measured");
-    const measuredR2Input = document.getElementById("r2Measured");
-    const measuredR1Input = document.getElementById("r1Measured");
-    const measuredChord6Input = document.getElementById("chord6Measured");
-    const measuredChord5Input = document.getElementById("chord5Measured");
-    const measuredChord4Input = document.getElementById("chord4Measured");
-    const measuredChord3Input = document.getElementById("chord3Measured");
-    const measuredChord2Input = document.getElementById("chord2Measured");
-    const measuredChord1Input = document.getElementById("chord1Measured");
-    const roundedDownR6Input = document.getElementById("r6Down");
-    const roundedDownR5Input = document.getElementById("r5Down");
-    const roundedDownR4Input = document.getElementById("r4Down");
-    const roundedDownR3Input = document.getElementById("r3Down");
-    const roundedDownR2Input = document.getElementById("r2Down");
-    const roundedDownR1Input = document.getElementById("r1Down");
-    const roundedUpR6Input = document.getElementById("r6Up");
-    const roundedUpR5Input = document.getElementById("r5Up");
-    const roundedUpR4Input = document.getElementById("r4Up");
-    const roundedUpR3Input = document.getElementById("r3Up");
-    const roundedUpR2Input = document.getElementById("r2Up");
-    const roundedUpR1Input = document.getElementById("r1Up");
-    const roundedDownChord6Input = document.getElementById("chord6Down");
-    const roundedDownChord5Input = document.getElementById("chord5Down");
-    const roundedDownChord4Input = document.getElementById("chord4Down");
-    const roundedDownChord3Input = document.getElementById("chord3Down");
-    const roundedDownChord2Input = document.getElementById("chord2Down");
-    const roundedDownChord1Input = document.getElementById("chord1Down");
-    const roundedUpChord6Input = document.getElementById("chord6Up");
-    const roundedUpChord5Input = document.getElementById("chord5Up");
-    const roundedUpChord4Input = document.getElementById("chord4Up");
-    const roundedUpChord3Input = document.getElementById("chord3Up");
-    const roundedUpChord2Input = document.getElementById("chord2Up");
-    const roundedUpChord1Input = document.getElementById("chord1Up");
-    const measuredRiseInput = document.getElementById("measuredRise");
+
+    const measuredElements = {
+        "degree": document.getElementById("degreeOfCurve"),
+        "rise": document.getElementById("measuredRise"),
+        "highRadius": document.getElementById("highRadius"),
+        "centerRadius": document.getElementById("centerRadius"),
+        "lowRadius": document.getElementById("lowRadius"),
+        "r6": {
+            "radius": document.getElementById("measured-r6-radius"),
+            "chord": document.getElementById("measured-r6-chord"),
+            "arcLength": document.getElementById("measured-r6-arc"),
+            "cutLength": document.getElementById("measured-r6-cut")
+        },
+        "r5": {
+            "radius": document.getElementById("measured-r5-radius"),
+            "chord": document.getElementById("measured-r5-chord"),
+            "arcLength": document.getElementById("measured-r5-arc"),
+            "cutLength": document.getElementById("measured-r5-cut")
+        },
+        "r4": {
+            "radius": document.getElementById("measured-r4-radius"),
+            "chord": document.getElementById("measured-r4-chord"),
+            "arcLength": document.getElementById("measured-r4-arc"),
+            "cutLength": document.getElementById("measured-r4-cut")
+        },
+        "r3": {
+            "radius": document.getElementById("measured-r3-radius"),
+            "chord": document.getElementById("measured-r3-chord"),
+            "arcLength": document.getElementById("measured-r3-arc"),
+            "cutLength": document.getElementById("measured-r3-cut")
+        },
+        "r2": {
+            "radius": document.getElementById("measured-r2-radius"),
+            "chord": document.getElementById("measured-r2-chord"),
+            "arcLength": document.getElementById("measured-r2-arc"),
+            "cutLength": document.getElementById("measured-r2-cut")
+        },
+        "r1": {
+            "radius": document.getElementById("measured-r1-radius"),
+            "chord": document.getElementById("measured-r1-chord"),
+            "arcLength": document.getElementById("measured-r1-arc"),
+            "cutLength": document.getElementById("measured-r1-cut")
+        }
+    };
+
+    const measuredValues = {
+        "degree": "",
+        "rise": "",
+        "highRadius": "",
+        "centerRadius": "",
+        "lowRadius": "",
+        "r6": {
+            "radius": "",
+            "chord": "",
+            "arcLength": "",
+            "cutLength": ""
+        },
+        "r5": {
+            "radius": "",
+            "chord": "",
+            "arcLength": "",
+            "cutLength": ""
+        },
+        "r4": {
+            "radius": "",
+            "chord": "",
+            "arcLength": "",
+            "cutLength": ""
+        },
+        "r3": {
+            "radius": "",
+            "chord": "",
+            "arcLength": "",
+            "cutLength": ""
+        },
+        "r2": {
+            "radius": "",
+            "chord": "",
+            "arcLength": "",
+            "cutLength": ""
+        },
+        "r1": {
+            "radius": "",
+            "chord": "",
+            "arcLength": "",
+            "cutLength": ""
+        }
+    };
 
 
     var railSizeModified = false;
@@ -391,12 +436,12 @@ document.addEventListener("DOMContentLoaded", function () {
         const measuredR2 = centerRadius - offset2;
         const measuredR1 = centerRadius - offset3;
 
-        measuredR6Input.value = measuredR6.toFixed(3);
-        measuredR5Input.value = measuredR5.toFixed(3);
-        measuredR4Input.value = measuredR4.toFixed(3);
-        measuredR3Input.value = measuredR3.toFixed(3);
-        measuredR2Input.value = measuredR2.toFixed(3);
-        measuredR1Input.value = measuredR1.toFixed(3);
+        measuredTable.r6.radius.innerText = measuredR6.toFixed(3);
+        measuredTable.r5.radius.innerText = measuredR5.toFixed(3);
+        measuredTable.r4.radius.innerText = measuredR4.toFixed(3);
+        measuredTable.r3.radius.innerText = measuredR3.toFixed(3);
+        measuredTable.r2.radius.innerText = measuredR2.toFixed(3);
+        measuredTable.r1.radius.innerText = measuredR1.toFixed(3);
     };
 
     function setRoundedDownRadii(centerRadius) {
@@ -554,6 +599,85 @@ document.addEventListener("DOMContentLoaded", function () {
         measuredRiseInput.value = measuredRiseIn.toFixed(3);
     }
 
+    // Central calculation and update function
+    function calculateAndUpdateFromCenterRadius(centerRadius) {
+        if (!centerRadius || isNaN(centerRadius)) return;
+
+        // Calculate all values
+        const panelLength = getPanelLength();
+        const degree = radiusToDegree(centerRadius);
+        const theta = Math.asin(panelLength / (2 * centerRadius));
+        
+        // Calculate rise
+        const versine = 1 - Math.cos(theta);
+        const measuredRiseFt = centerRadius * versine;
+        const measuredRiseIn = measuredRiseFt * 12;
+
+        // Calculate offsets for radii
+        const offset1 = getGageWidth() / 2;
+        const offset2 = getGageWidth() / 2 + getGageRubberWidth() + getRailHeadWidth() + getFieldRubberWidth();
+        const offset3 = getGageWidth() / 2 + getGageRubberWidth() + getRailHeadWidth() + getFieldRubberWidth() + getFieldWidth();
+
+        // Update measuredValues object
+        measuredValues.degree = degree;
+        measuredValues.rise = measuredRiseIn;
+        measuredValues.centerRadius = centerRadius;
+        measuredValues.highRadius = centerRadius + (getRailHeadWidth()/2 + getGageRubberWidth() + getGageWidth()/2);
+        measuredValues.lowRadius = centerRadius - (getRailHeadWidth()/2 + getGageRubberWidth() + getGageWidth()/2);
+
+        // Calculate radii for all layers
+        const radii = {
+            r6: centerRadius + offset3,
+            r5: centerRadius + offset2,
+            r4: centerRadius + offset1,
+            r3: centerRadius - offset1,
+            r2: centerRadius - offset2,
+            r1: centerRadius - offset3
+        };
+
+        // Calculate chords for all layers
+        const chords = {};
+        Object.keys(radii).forEach(key => {
+            chords[key] = 2 * radii[key] * Math.sin(theta);
+            measuredValues[key].radius = radii[key];
+            measuredValues[key].chord = chords[key];
+            measuredValues[key].arcLength = radii[key] * theta; // Arc length = radius * angle
+            measuredValues[key].cutLength = chords[key]; // Assuming cut length = chord length
+        });
+
+        // Update all DOM elements
+        updateMeasuredElementsFromValues();
+    }
+
+    // Function to update DOM elements from measuredValues
+    function updateMeasuredElementsFromValues() {
+        // Update basic measurements
+        if (measuredElements.degree) {
+            measuredElements.degree.textContent = measuredValues.degree.toFixed(3);
+        }
+        if (measuredElements.rise) {
+            measuredElements.rise.value = measuredValues.rise.toFixed(3);
+        }
+
+        // Update radius layers
+        ['r1', 'r2', 'r3', 'r4', 'r5', 'r6'].forEach(layer => {
+            if (measuredElements[layer]) {
+                if (measuredElements[layer].radius) {
+                    measuredElements[layer].radius.textContent = measuredValues[layer].radius.toFixed(3);
+                }
+                if (measuredElements[layer].chord) {
+                    measuredElements[layer].chord.value = measuredValues[layer].chord.toFixed(3);
+                }
+                if (measuredElements[layer].arcLength) {
+                    measuredElements[layer].arcLength.value = measuredValues[layer].arcLength.toFixed(3);
+                }
+                if (measuredElements[layer].cutLength) {
+                    measuredElements[layer].cutLength.value = measuredValues[layer].cutLength.toFixed(3);
+                }
+            }
+        });
+    }
+
     // Call the function when the page loads
     // setDefaultValues();
     setPanelTypeDefaults(getPanelType()); // Set defaults for the initial panel type
@@ -572,6 +696,10 @@ document.addEventListener("DOMContentLoaded", function () {
 
     panelLengthInput.addEventListener("change", function () {
         setPanelTypeModified(true);
+        // Recalculate if we have a center radius
+        if (measuredValues.centerRadius) {
+            calculateAndUpdateFromCenterRadius(measuredValues.centerRadius);
+        }
     });
 
     radio_objects.forEach(function(radio) {
@@ -579,66 +707,73 @@ document.addEventListener("DOMContentLoaded", function () {
             // alert(this.value);
             setGageType(this.value);
             setPanelTypeModified(true);
+            // Recalculate if we have a center radius
+            if (measuredValues.centerRadius) {
+                calculateAndUpdateFromCenterRadius(measuredValues.centerRadius);
+            }
         });
     });
 
     fieldWidthInput.addEventListener("change", function () {
         setPanelTypeModified(true);
+        // Recalculate if we have a center radius
+        if (measuredValues.centerRadius) {
+            calculateAndUpdateFromCenterRadius(measuredValues.centerRadius);
+        }
     });
 
-    centerRadiusInput.addEventListener("change", function () {
-        const centerRadius = parseFloat(centerRadiusInput.value);
-        const degree = radiusToDegree(centerRadius);
-        setMeasuredDegree(centerRadius);
-        setRoundedDownDegree(centerRadius);
-        setRoundedUpDegree(centerRadius);
-        // console.log(`Center Radius: ${centerRadius}, Degree: ${degree}`);
-        const downRadius = degreeToRadius(Math.floor(degree));
-        const upRadius = degreeToRadius(Math.ceil(degree));
-        setAllMeasuredRadii(centerRadius);
-        setAllMeasuredChords(centerRadius);
-        setRoundedDownRadii(downRadius);
-        setRoundedDownChords(downRadius);
-        setRoundedUpRadii(upRadius);
-        setRoundedUpChords(upRadius);
-
-        setMeasuredRise(centerRadius);
-
-        // Clear the input fields for High and Low Radii
-        highRadiusInput.value = "";
-        lowRadiusInput.value = "";
+    // Add listeners for other parameters that affect calculations
+    gageWidthInput.addEventListener("change", function () {
+        if (measuredValues.centerRadius) {
+            calculateAndUpdateFromCenterRadius(measuredValues.centerRadius);
+        }
     });
 
-    highRadiusInput.addEventListener("change", function () {
-        const highRadius = parseFloat(highRadiusInput.value);
-        
-        const centerRadius = highRadius - (getRailHeadWidth()/2 + getGageRubberWidth() + getGageWidth()/2);
-        setMeasuredDegree(centerRadius);
-        setRoundedDownDegree(centerRadius);
-        setRoundedUpDegree(centerRadius);
-        
-        setAllMeasuredRadii(centerRadius);
-        setAllMeasuredChords(centerRadius);
-        
-        centerRadiusInput.value = "";
-        lowRadiusInput.value = "";
-
+    fieldRubberWidthInput.addEventListener("change", function () {
+        if (measuredValues.centerRadius) {
+            calculateAndUpdateFromCenterRadius(measuredValues.centerRadius);
+        }
     });
 
-    lowRadiusInput.addEventListener("change", function () {
-        const lowRadius = parseFloat(lowRadiusInput.value);
-        
-        const centerRadius = lowRadius + (getRailHeadWidth()/2 + getGageRubberWidth() + getGageWidth()/2);
-        setMeasuredDegree(centerRadius);
-        setRoundedDownDegree(centerRadius);
-        setRoundedUpDegree(centerRadius);
-        
-        setAllMeasuredRadii(centerRadius);
-        setAllMeasuredChords(centerRadius);
-        
-        centerRadiusInput.value = "";
-        highRadiusInput.value = "";
+    gageRubberWidthInput.addEventListener("change", function () {
+        if (measuredValues.centerRadius) {
+            calculateAndUpdateFromCenterRadius(measuredValues.centerRadius);
+        }
+    });
 
+    measuredElements.centerRadius.addEventListener("change", function () {
+        const centerRadius = parseFloat(measuredElements.centerRadius.value);
+        if (!isNaN(centerRadius)) {
+            calculateAndUpdateFromCenterRadius(centerRadius);
+            
+            // Clear the input fields for High and Low Radii
+            if (measuredElements.highRadius) measuredElements.highRadius.value = "";
+            if (measuredElements.lowRadius) measuredElements.lowRadius.value = "";
+        }
+    });
+
+    measuredElements.highRadius.addEventListener("change", function () {
+        const highRadius = parseFloat(measuredElements.highRadius.value);
+        if (!isNaN(highRadius)) {
+            const centerRadius = highRadius - (getRailHeadWidth()/2 + getGageRubberWidth() + getGageWidth()/2);
+            calculateAndUpdateFromCenterRadius(centerRadius);
+            
+            // Update the center radius display and clear other inputs
+            measuredElements.centerRadius.value = centerRadius.toFixed(3);
+            if (measuredElements.lowRadius) measuredElements.lowRadius.value = "";
+        }
+    });
+
+    measuredElements.lowRadius.addEventListener("change", function () {
+        const lowRadius = parseFloat(measuredElements.lowRadius.value);
+        if (!isNaN(lowRadius)) {
+            const centerRadius = lowRadius + (getRailHeadWidth()/2 + getGageRubberWidth() + getGageWidth()/2);
+            calculateAndUpdateFromCenterRadius(centerRadius);
+            
+            // Update the center radius display and clear other inputs
+            measuredElements.centerRadius.value = centerRadius.toFixed(3);
+            if (measuredElements.highRadius) measuredElements.highRadius.value = "";
+        }
     });
 
     var previousRailSize;
@@ -650,10 +785,18 @@ document.addEventListener("DOMContentLoaded", function () {
         setRailSize(newRailSize);
         setRailSizeModified(false, previousRailSize);
         previousRailSize = newRailSize;
+        // Recalculate if we have a center radius
+        if (measuredValues.centerRadius) {
+            calculateAndUpdateFromCenterRadius(measuredValues.centerRadius);
+        }
     });
 
     railHeadWidthInput.addEventListener("change", function () {
         setRailSizeModified(true);
+        // Recalculate if we have a center radius
+        if (measuredValues.centerRadius) {
+            calculateAndUpdateFromCenterRadius(measuredValues.centerRadius);
+        }
     });
 });
 

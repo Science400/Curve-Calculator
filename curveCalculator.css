@@ -1,6 +1,10 @@
 :root {
     --flexoki-black: #100F0F;
+    --flexoki-base-950: #1C1B1A;
+    --flexoki-base-900: #282726
     --flexoki-base-200: #CECDC3;
+    --flexoki-base-100: #E6E4D9
+    --flexoki-base-50: #F2F0E5;
     --flexoki-paper: #FFFCF0
 }
 
@@ -9,6 +13,12 @@ body {
     color: light-dark(var(--flexoki-black), var(--flexoki-base-200));
     font-family: "Fira Code", monospace;
     font-weight: 400;
+}
+
+input[type="number"], select, .form-select {
+    background-color: light-dark(var(--flexoki-base-50), var(--flexoki-base-950));
+    color: light-dark(var(--flexoki-black), var(--flexoki-base-200));
+    border-color: light-dark(var(--flexoki-base-100), var(--flexoki-base-900));
 }
 
 .fira-mono-regular {
@@ -36,3 +46,4 @@ body {
   font-weight: 400;
   font-style: normal;
 }
+
