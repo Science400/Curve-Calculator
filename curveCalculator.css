@@ -1,0 +1,38 @@
+:root {
+    --flexoki-black: #100F0F;
+    --flexoki-base-200: #CECDC3;
+    --flexoki-paper: #FFFCF0
+}
+
+body {
+    background-color: light-dark(var(--flexoki-paper), var(--flexoki-black));
+    color: light-dark(var(--flexoki-black), var(--flexoki-base-200));
+    font-family: "Fira Code", monospace;
+    font-weight: 400;
+}
+
+.fira-mono-regular {
+  font-family: "Fira Mono", monospace;
+  font-weight: 400;
+  font-style: normal;
+}
+
+.fira-mono-medium {
+  font-family: "Fira Mono", monospace;
+  font-weight: 500;
+  font-style: normal;
+}
+
+.fira-mono-bold {
+  font-family: "Fira Mono", monospace;
+  font-weight: 700;
+  font-style: normal;
+}
+
+
+.fira-code-regular {
+  font-family: "Fira Code", monospace;
+  font-optical-sizing: auto;
+  font-weight: 400;
+  font-style: normal;
+}

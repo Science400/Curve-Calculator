@@ -656,3 +656,20 @@ document.addEventListener("DOMContentLoaded", function () {
         setRailSizeModified(true);
     });
 });
+
+// Color Scheme Toggle
+const selectedColorScheme = localStorage.getItem('color-scheme') || 'light dark';
+
+const applyScheme = (scheme) => {
+    localStorage.setItem('color-scheme', scheme);
+    document.documentElement.style.setProperty('color-scheme', scheme);
+    document.querySelector(`[name="color-scheme"][value="${scheme}"]`).checked = true;
+}
+
+applyScheme(selectedColorScheme);
+
+document.querySelectorAll('[name="color-scheme"]').forEach(radio => {
+    radio.addEventListener('change', (e) => {
+        applyScheme(e.target.value);
+    });
+});
