@@ -608,6 +608,7 @@ document.addEventListener("DOMContentLoaded", function () {
         const degree = radiusToDegree(centerRadius);
         const theta = Math.asin(panelLength / (2 * centerRadius));
         
+        
         // Calculate rise
         const versine = 1 - Math.cos(theta);
         const measuredRiseFt = centerRadius * versine;
@@ -635,14 +636,11 @@ document.addEventListener("DOMContentLoaded", function () {
             r1: centerRadius - offset3
         };
 
-        // Calculate chords for all layers
-        const chords = {};
         Object.keys(radii).forEach(key => {
-            chords[key] = 2 * radii[key] * Math.sin(theta);
             measuredValues[key].radius = radii[key];
-            measuredValues[key].chord = chords[key];
-            measuredValues[key].arcLength = radii[key] * theta; // Arc length = radius * angle
-            measuredValues[key].cutLength = chords[key]; // Assuming cut length = chord length
+            measuredValues[key].chord = 2 * radii[key] * Math.sin(theta);
+            measuredValues[key].arcLength = 2 * radii[key] * theta; // Arc length = radius * angle
+            measuredValues[key].cutLength = measuredValues[key].arcLength - (1/12); // Cut length = arc length - 1 inch
         });
 
         // Update all DOM elements
@@ -651,9 +649,13 @@ document.addEventListener("DOMContentLoaded", function () {
 
     // Function to update DOM elements from measuredValues
     function updateMeasuredElementsFromValues() {
+
+        console.log("Ready to update table.");
         // Update basic measurements
         if (measuredElements.degree) {
-            measuredElements.degree.textContent = measuredValues.degree.toFixed(3);
+            console.log("Updating degree element.");
+            console.log(`Degree: ${measuredValues.degree}`);
+            measuredElements.degree.value = measuredValues.degree.toFixed(3);
         }
         if (measuredElements.rise) {
             measuredElements.rise.value = measuredValues.rise.toFixed(3);
@@ -666,13 +668,13 @@ document.addEventListener("DOMContentLoaded", function () {
                     measuredElements[layer].radius.textContent = measuredValues[layer].radius.toFixed(3);
                 }
                 if (measuredElements[layer].chord) {
-                    measuredElements[layer].chord.value = measuredValues[layer].chord.toFixed(3);
+                    measuredElements[layer].chord.textContent = measuredValues[layer].chord.toFixed(3);
                 }
                 if (measuredElements[layer].arcLength) {
-                    measuredElements[layer].arcLength.value = measuredValues[layer].arcLength.toFixed(3);
+                    measuredElements[layer].arcLength.textContent = measuredValues[layer].arcLength.toFixed(3);
                 }
                 if (measuredElements[layer].cutLength) {
-                    measuredElements[layer].cutLength.value = measuredValues[layer].cutLength.toFixed(3);
+                    measuredElements[layer].cutLength.textContent = measuredValues[layer].cutLength.toFixed(3);
                 }
             }
         });
