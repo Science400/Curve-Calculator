@@ -117,37 +117,43 @@ document.addEventListener("DOMContentLoaded", function () {
             "radius": document.getElementById("compare-r6-radius"),
             "chord": document.getElementById("compare-r6-chord"),
             "arcLength": document.getElementById("compare-r6-arc"),
-            "cutLength": document.getElementById("compare-r6-cut")
+            "cutLength": document.getElementById("compare-r6-cut"),
+            "spec": document.getElementById("compare-r6-spec")
         },
         "r5": {
             "radius": document.getElementById("compare-r5-radius"),
             "chord": document.getElementById("compare-r5-chord"),
             "arcLength": document.getElementById("compare-r5-arc"),
-            "cutLength": document.getElementById("compare-r5-cut")
+            "cutLength": document.getElementById("compare-r5-cut"),
+            "spec": document.getElementById("compare-r5-spec")
         },
         "r4": {
             "radius": document.getElementById("compare-r4-radius"),
             "chord": document.getElementById("compare-r4-chord"),
             "arcLength": document.getElementById("compare-r4-arc"),
-            "cutLength": document.getElementById("compare-r4-cut")
+            "cutLength": document.getElementById("compare-r4-cut"),
+            "spec": document.getElementById("compare-r4-spec")
         },
         "r3": {
             "radius": document.getElementById("compare-r3-radius"),
             "chord": document.getElementById("compare-r3-chord"),
             "arcLength": document.getElementById("compare-r3-arc"),
-            "cutLength": document.getElementById("compare-r3-cut")
+            "cutLength": document.getElementById("compare-r3-cut"),
+            "spec": document.getElementById("compare-r3-spec")
         },
         "r2": {
             "radius": document.getElementById("compare-r2-radius"),
             "chord": document.getElementById("compare-r2-chord"),
             "arcLength": document.getElementById("compare-r2-arc"),
-            "cutLength": document.getElementById("compare-r2-cut")
+            "cutLength": document.getElementById("compare-r2-cut"),
+            "spec": document.getElementById("compare-r2-spec")
         },
         "r1": {
             "radius": document.getElementById("compare-r1-radius"),
             "chord": document.getElementById("compare-r1-chord"),
             "arcLength": document.getElementById("compare-r1-arc"),
-            "cutLength": document.getElementById("compare-r1-cut")
+            "cutLength": document.getElementById("compare-r1-cut"),
+            "spec": document.getElementById("compare-r1-spec")
         }
     };
 
@@ -769,10 +775,12 @@ document.addEventListener("DOMContentLoaded", function () {
                 // If the difference is less than 1/8" add .table-success
                 document.getElementById(`compare-${layer}`).classList.add('table-success');
                 document.getElementById(`compare-${layer}`).classList.remove('table-danger');
+                compareElements[layer].spec.textContent = "✓";
             }
             else {
                 document.getElementById(`compare-${layer}`).classList.add('table-danger');
                 document.getElementById(`compare-${layer}`).classList.remove('table-success');
+                compareElements[layer].spec.textContent = "✗";
             }
         });
     }
