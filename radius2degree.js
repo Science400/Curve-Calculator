@@ -648,15 +648,13 @@ document.addEventListener("DOMContentLoaded", function () {
     // Function to update DOM elements from measuredValues
     function updateMeasuredElementsFromValues() {
 
-        console.log("Ready to update table.");
+        // console.log("Ready to update table.");
         // Update basic measurements
         if (measuredElements.degree) {
-            console.log("Updating degree element.");
-            console.log(`Degree: ${measuredValues.degree}`);
-            measuredElements.degree.value = measuredValues.degree.toFixed(3);
+            measuredElements.degree.value = parseFloat(measuredValues.degree.toFixed(3));
         }
         if (measuredElements.rise) {
-            measuredElements.rise.value = measuredValues.rise.toFixed(3);
+            measuredElements.rise.value = inchesToFractional(measuredValues.rise, 32);
         }
 
         // Update radius layers
@@ -707,6 +705,29 @@ document.addEventListener("DOMContentLoaded", function () {
             return `${feetString}'-${inchesString}"`;
         } else {
             return `${feetString}'-${inchesString} ${numerator}/${denominator}"`;
+        }
+    }
+
+    function inchesToFractional(inches, denominator) {
+        if (isNaN(inches) || inches < 0) {
+            return "0";
+        }
+        var wholeInches = Math.floor(inches);
+        var fractionalPart = inches - wholeInches;
+        var numerator = Math.round(fractionalPart * denominator);
+        
+        // Reduce fraction
+        while (numerator % 2 === 0 && numerator > 0) {
+            numerator /= 2;
+            denominator /= 2;
+        }
+
+        if (numerator === 0) {
+            return `${wholeInches}"`;
+        } else if (wholeInches === 0) {
+            return `${numerator}/${denominator}"`;
+        } else {
+            return `${wholeInches} ${numerator}/${denominator}"`;
         }
     }
 
@@ -780,8 +801,8 @@ document.addEventListener("DOMContentLoaded", function () {
             calculateAndUpdateFromCenterRadius(centerRadius);
 
             // Clear the input fields for High and Low Radii
-            if (measuredElements.highRadius) measuredElements.highRadius.value = "";
-            if (measuredElements.lowRadius) measuredElements.lowRadius.value = "";
+            measuredElements.highRadius.value = "";
+            measuredElements.lowRadius.value = "";
         }
     });
 
@@ -791,9 +812,9 @@ document.addEventListener("DOMContentLoaded", function () {
             const centerRadius = highRadius - (getRailHeadWidth() / 2 + getGageRubberWidth() + getGageWidth() / 2);
             calculateAndUpdateFromCenterRadius(centerRadius);
 
-            // Update the center radius display and clear other inputs
-            measuredElements.centerRadius.value = centerRadius.toFixed(3);
-            if (measuredElements.lowRadius) measuredElements.lowRadius.value = "";
+            // Clear the input fields for Center and Low Radii
+            measuredElements.centerRadius.value = "";
+            measuredElements.lowRadius.value = "";
         }
     });
 
@@ -804,9 +825,22 @@ document.addEventListener("DOMContentLoaded", function () {
             calculateAndUpdateFromCenterRadius(centerRadius);
 
             // Update the center radius display and clear other inputs
-            measuredElements.centerRadius.value = centerRadius.toFixed(3);
-            if (measuredElements.highRadius) measuredElements.highRadius.value = "";
+            measuredElements.centerRadius.value = ""
+            measuredElements.highRadius.value = "";
         }
+    });
+
+    measuredElements.degree.addEventListener("change", function () {
+        const degree = parseFloat(measuredElements.degree.value);
+        if (!isNaN(degree)) {
+            const centerRadius = degreeToRadius(degree);
+            calculateAndUpdateFromCenterRadius(centerRadius);
+        }
+
+        // Clear the radius inputs
+        measuredElements.highRadius.value = "";
+        measuredElements.centerRadius.value = "";
+        measuredElements.lowRadius.value = "";
     });
 
     var previousRailSize;
