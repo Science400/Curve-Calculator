@@ -1,10 +1,8 @@
 document.addEventListener("DOMContentLoaded", function () {
     // https://stackoverflow.com/a/79490464
     let radio_objects = document.querySelectorAll("input[type='radio'][name=gageType]");
-    for (let i = 0; i < radio_objects.length; i++)
-    {
-        radio_objects[i].addEventListener('click', function ()
-        {
+    for (let i = 0; i < radio_objects.length; i++) {
+        radio_objects[i].addEventListener('click', function () {
             document.getElementById(this.name).dataset.value = this.value;
         });
     }
@@ -117,15 +115,15 @@ document.addEventListener("DOMContentLoaded", function () {
 
     // Rail Head Widths
     const railHeadWidths = {
-        "90": (2 + 9/16)/12,
-        "110": (2 + 5/8)/12,
-        "115": (2 + 11/16)/12,
-        "119": (2 + 5/8)/12,
-        "132": (2 + 15/16)/12,
-        "133": (2 + 7/8)/12,
-        "136": (2 + 7/8)/12,
-        "140": (2 + 15/16)/12,
-        "141": (3)/12
+        "90": (2 + 9 / 16) / 12,
+        "110": (2 + 5 / 8) / 12,
+        "115": (2 + 11 / 16) / 12,
+        "119": (2 + 5 / 8) / 12,
+        "132": (2 + 15 / 16) / 12,
+        "133": (2 + 7 / 8) / 12,
+        "136": (2 + 7 / 8) / 12,
+        "140": (2 + 15 / 16) / 12,
+        "141": (3) / 12
     };
 
     // Populate the select element with rail sizes
@@ -166,7 +164,7 @@ document.addEventListener("DOMContentLoaded", function () {
     function setRailSizeModified(modified, railSize) {
         // If railSize is not provided, use the currently selected rail size
         const targetRailSize = railSize || railSizeSelect.value;
-        
+
         if (modified) {
             // Update the specified option in the select element to say (modified)
             const selectedOption = railSizeSelect.querySelector(`option[value="${targetRailSize}"]`);
@@ -181,7 +179,7 @@ document.addEventListener("DOMContentLoaded", function () {
                 selectedOption.textContent = `#${targetRailSize}`;
             }
         }
-        
+
         if (targetRailSize === railSizeSelect.value) {
             railSizeModified = modified;
         }
@@ -207,22 +205,22 @@ document.addEventListener("DOMContentLoaded", function () {
         "1301": {
             "gageType": "standard",
             "panelLength": 8.125,
-            "gageWidth": 50.50/12,
-            "fieldWidth": 27/12,
+            "gageWidth": 50.50 / 12,
+            "fieldWidth": 27 / 12,
             "railSize": "133",
-            "fieldRubberWidth": 2.5/12,
-            "railHeadWidth": 3/12,
-            "gageRubberWidth": 3/12
+            "fieldRubberWidth": 2.5 / 12,
+            "railHeadWidth": 3 / 12,
+            "gageRubberWidth": 3 / 12
         },
         "1310": {
             "gageType": "pedestrian",
             "panelLength": 10,
-            "gageWidth": 51.50/12,
-            "fieldWidth": 18/12,
+            "gageWidth": 51.50 / 12,
+            "fieldWidth": 18 / 12,
             "railSize": "115",
-            "fieldRubberWidth": 2.5/12,
-            "railHeadWidth": (2 + 11/16)/12,
-            "gageRubberWidth": 2.5/12
+            "fieldRubberWidth": 2.5 / 12,
+            "railHeadWidth": (2 + 11 / 16) / 12,
+            "gageRubberWidth": 2.5 / 12
         },
         "1315": {
         }
@@ -259,7 +257,7 @@ document.addEventListener("DOMContentLoaded", function () {
     function setPanelTypeModified(modified, panelType) {
         // If panelType is not provided, use the currently selected panel type
         const targetPanelType = panelType || panelTypeSelect.value;
-        
+
         if (modified) {
             // Update the specified option in the select element to say (modified)
             const selectedOption = panelTypeSelect.querySelector(`option[value="${targetPanelType}"]`);
@@ -273,7 +271,7 @@ document.addEventListener("DOMContentLoaded", function () {
                 selectedOption.textContent = targetPanelType;
             }
         }
-        
+
         if (targetPanelType === panelTypeSelect.value) {
             panelTypeModified = modified;
         }
@@ -324,9 +322,9 @@ document.addEventListener("DOMContentLoaded", function () {
         if (validGageTypes.includes(gageType)) {
             // Set gage width based on gage type
             if (gageType === "standard") {
-                gageWidthInput.value = 50.50/12; // Example value for standard gage
+                gageWidthInput.value = 50.50 / 12; // Example value for standard gage
             } else if (gageType === "pedestrian") {
-                gageWidthInput.value = 51.50/12; // Example value for pedestrian gage
+                gageWidthInput.value = 51.50 / 12; // Example value for pedestrian gage
             }
         } else {
             console.warn(`Invalid gage type: ${gageType}`);
@@ -540,7 +538,7 @@ document.addEventListener("DOMContentLoaded", function () {
         roundedDownChord1Input.value = roundedDownChordR1.toFixed(3);
 
         const measuredChord6 = parseFloat(measuredChord6Input.value) || 0;
-        if (roundedDownChordR6 > measuredChord6-((1/8)/12)) {
+        if (roundedDownChordR6 > measuredChord6 - ((1 / 8) / 12)) {
             roundedDownChord6Input.classList.add("is-valid");
             roundedDownChord6Input.classList.remove("is-invalid");
         }
@@ -577,7 +575,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
     }
 
-    
+
 
     function degreeToRadius(degree) {
         const CLradius = (degree / 12 / 2) + ((62 * 62) / (8 * degree / 12));
@@ -588,7 +586,7 @@ document.addEventListener("DOMContentLoaded", function () {
         const degree = 12 * (radius - Math.sqrt(radius * radius - 961));
         return degree;
     }
-    
+
     function setMeasuredRise(centerRadius) {
         const panelLength = getPanelLength();
         const theta = Math.asin(panelLength / (2 * centerRadius));
@@ -607,8 +605,8 @@ document.addEventListener("DOMContentLoaded", function () {
         const panelLength = getPanelLength();
         const degree = radiusToDegree(centerRadius);
         const theta = Math.asin(panelLength / (2 * centerRadius));
-        
-        
+
+
         // Calculate rise
         const versine = 1 - Math.cos(theta);
         const measuredRiseFt = centerRadius * versine;
@@ -623,8 +621,8 @@ document.addEventListener("DOMContentLoaded", function () {
         measuredValues.degree = degree;
         measuredValues.rise = measuredRiseIn;
         measuredValues.centerRadius = centerRadius;
-        measuredValues.highRadius = centerRadius + (getRailHeadWidth()/2 + getGageRubberWidth() + getGageWidth()/2);
-        measuredValues.lowRadius = centerRadius - (getRailHeadWidth()/2 + getGageRubberWidth() + getGageWidth()/2);
+        measuredValues.highRadius = centerRadius + (getRailHeadWidth() / 2 + getGageRubberWidth() + getGageWidth() / 2);
+        measuredValues.lowRadius = centerRadius - (getRailHeadWidth() / 2 + getGageRubberWidth() + getGageWidth() / 2);
 
         // Calculate radii for all layers
         const radii = {
@@ -640,7 +638,7 @@ document.addEventListener("DOMContentLoaded", function () {
             measuredValues[key].radius = radii[key];
             measuredValues[key].chord = 2 * radii[key] * Math.sin(theta);
             measuredValues[key].arcLength = 2 * radii[key] * theta; // Arc length = radius * angle
-            measuredValues[key].cutLength = measuredValues[key].arcLength - (1/12); // Cut length = arc length - 1 inch
+            measuredValues[key].cutLength = measuredValues[key].arcLength - (1 / 12); // Cut length = arc length - 1 inch
         });
 
         // Update all DOM elements
@@ -665,20 +663,53 @@ document.addEventListener("DOMContentLoaded", function () {
         ['r1', 'r2', 'r3', 'r4', 'r5', 'r6'].forEach(layer => {
             if (measuredElements[layer]) {
                 if (measuredElements[layer].radius) {
-                    measuredElements[layer].radius.textContent = measuredValues[layer].radius.toFixed(3);
+                    measuredElements[layer].radius.textContent = feetToArchitectural(measuredValues[layer].radius);
                 }
                 if (measuredElements[layer].chord) {
-                    measuredElements[layer].chord.textContent = measuredValues[layer].chord.toFixed(3);
+                    measuredElements[layer].chord.textContent = feetToArchitectural(measuredValues[layer].chord);
                 }
                 if (measuredElements[layer].arcLength) {
-                    measuredElements[layer].arcLength.textContent = measuredValues[layer].arcLength.toFixed(3);
+                    measuredElements[layer].arcLength.textContent = feetToArchitectural(measuredValues[layer].arcLength);
                 }
                 if (measuredElements[layer].cutLength) {
-                    measuredElements[layer].cutLength.textContent = measuredValues[layer].cutLength.toFixed(3);
+                    measuredElements[layer].cutLength.textContent = feetToArchitectural(measuredValues[layer].cutLength);
                 }
             }
         });
     }
+
+
+
+    /**
+     * Converts a decimal feet value to an architectural string format (e.g., 5'-7 1/2").
+     * @param {number} feet - The length in decimal feet.
+     * @returns {string} The formatted architectural string.
+     */
+    function feetToArchitectural(feet) {
+        // var feetString = feet.toString().split('.')[0];
+        var feetString = Math.floor(feet);
+        // var inchesString = "0." + feet.toString().split('.')[1];
+        var inches = (feet - feetString) * 12;
+        var inchesString = Math.floor(inches);
+
+        var fraction = inches - inchesString;
+        var denominator = 16;
+        var numerator = Math.round(fraction * denominator); // Round to nearest 1/16 inch
+
+        while (numerator % 2 === 0 && numerator > 0) {
+            numerator /= 2;
+            denominator /= 2;
+        }
+
+        // Uncomment for debugging:
+        // console.log(`Feet: ${feetString}, Inches: ${inchesString}, Fraction: ${numerator}/${denominator} - ${fraction}`);
+        if (numerator === 0) {
+            return `${feetString}'-${inchesString}"`;
+        } else {
+            return `${feetString}'-${inchesString} ${numerator}/${denominator}"`;
+        }
+    }
+
 
     // Call the function when the page loads
     // setDefaultValues();
@@ -704,8 +735,8 @@ document.addEventListener("DOMContentLoaded", function () {
         }
     });
 
-    radio_objects.forEach(function(radio) {
-        radio.addEventListener("change", function() {
+    radio_objects.forEach(function (radio) {
+        radio.addEventListener("change", function () {
             // alert(this.value);
             setGageType(this.value);
             setPanelTypeModified(true);
@@ -747,7 +778,7 @@ document.addEventListener("DOMContentLoaded", function () {
         const centerRadius = parseFloat(measuredElements.centerRadius.value);
         if (!isNaN(centerRadius)) {
             calculateAndUpdateFromCenterRadius(centerRadius);
-            
+
             // Clear the input fields for High and Low Radii
             if (measuredElements.highRadius) measuredElements.highRadius.value = "";
             if (measuredElements.lowRadius) measuredElements.lowRadius.value = "";
@@ -757,9 +788,9 @@ document.addEventListener("DOMContentLoaded", function () {
     measuredElements.highRadius.addEventListener("change", function () {
         const highRadius = parseFloat(measuredElements.highRadius.value);
         if (!isNaN(highRadius)) {
-            const centerRadius = highRadius - (getRailHeadWidth()/2 + getGageRubberWidth() + getGageWidth()/2);
+            const centerRadius = highRadius - (getRailHeadWidth() / 2 + getGageRubberWidth() + getGageWidth() / 2);
             calculateAndUpdateFromCenterRadius(centerRadius);
-            
+
             // Update the center radius display and clear other inputs
             measuredElements.centerRadius.value = centerRadius.toFixed(3);
             if (measuredElements.lowRadius) measuredElements.lowRadius.value = "";
@@ -769,9 +800,9 @@ document.addEventListener("DOMContentLoaded", function () {
     measuredElements.lowRadius.addEventListener("change", function () {
         const lowRadius = parseFloat(measuredElements.lowRadius.value);
         if (!isNaN(lowRadius)) {
-            const centerRadius = lowRadius + (getRailHeadWidth()/2 + getGageRubberWidth() + getGageWidth()/2);
+            const centerRadius = lowRadius + (getRailHeadWidth() / 2 + getGageRubberWidth() + getGageWidth() / 2);
             calculateAndUpdateFromCenterRadius(centerRadius);
-            
+
             // Update the center radius display and clear other inputs
             measuredElements.centerRadius.value = centerRadius.toFixed(3);
             if (measuredElements.highRadius) measuredElements.highRadius.value = "";
