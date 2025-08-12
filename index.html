@@ -205,7 +205,7 @@
 									<th scope="col"></th>
 									<th scope="col">Radius</th>
 									<th scope="col">Chord</th>
-									<th scope="col">Arc Length</th>
+									<th scope="col" class="d-none">Arc Length</th>
 									<th scope="col">Cut Length</th>
 								</tr>
 							</thead>
@@ -214,42 +214,42 @@
 									<th scope="row">R6</th>
 									<td id="measured-r6-radius">-</td>
 									<td id="measured-r6-chord">-</td>
-									<td id="measured-r6-arc">-</td>
+									<td id="measured-r6-arc" class="d-none">-</td>
 									<td id="measured-r6-cut">-</td>
 								</tr>
 								<tr>
 									<th scope="row">R5</th>
 									<td id="measured-r5-radius">-</td>
 									<td id="measured-r5-chord">-</td>
-									<td id="measured-r5-arc">-</td>
+									<td id="measured-r5-arc" class="d-none">-</td>
 									<td id="measured-r5-cut">-</td>
 								</tr>
 								<tr>
 									<th scope="row">R4</th>
 									<td id="measured-r4-radius">-</td>
 									<td id="measured-r4-chord">-</td>
-									<td id="measured-r4-arc">-</td>
+									<td id="measured-r4-arc" class="d-none">-</td>
 									<td id="measured-r4-cut">-</td>
 								</tr>
 								<tr>
 									<th scope="row">R3</th>
 									<td id="measured-r3-radius">-</td>
 									<td id="measured-r3-chord">-</td>
-									<td id="measured-r3-arc">-</td>
+									<td id="measured-r3-arc" class="d-none">-</td>
 									<td id="measured-r3-cut">-</td>
 								</tr>
 								<tr>
 									<th scope="row">R2</th>
 									<td id="measured-r2-radius">-</td>
 									<td id="measured-r2-chord">-</td>
-									<td id="measured-r2-arc">-</td>
+									<td id="measured-r2-arc" class="d-none">-</td>
 									<td id="measured-r2-cut">-</td>
 								</tr>
 								<tr>
 									<th scope="row">R1</th>
 									<td id="measured-r1-radius">-</td>
 									<td id="measured-r1-chord">-</td>
-									<td id="measured-r1-arc">-</td>
+									<td id="measured-r1-arc" class="d-none">-</td>
 									<td id="measured-r1-cut">-</td>
 								</tr>
 							</tbody>
@@ -266,14 +266,14 @@
 						<h2 class="text-center">Compare</h2>
 					</div>
 					<div class="row">
-						<label for="compareDegreeOfCurve" class="form-label">Degree of Curve</label>
-						<input type="number" class="form-control" id="compareDegreeOfCurve"
+						<label for="compare-degreeOfCurve" class="form-label">Degree of Curve</label>
+						<input type="number" class="form-control" id="compare-degreeOfCurve"
 							placeholder="Enter degree of curve">
 					</div>
 
 					<div class="row">
-						<label for="compareMeasuredRise" class="form-label">Measured Rise (in)</label>
-						<input type="text" class="form-control" id="compareMeasuredRise"
+						<label for="compare-Rise" class="form-label">Measured Rise (in)</label>
+						<input type="text" class="form-control" id="compare-Rise"
 							placeholder="Enter measured rise in inches" disabled>
 					</div>
 
@@ -282,22 +282,22 @@
 						<div class="col-3">
 							<!-- High Radius -->
 							<div class="">
-								<label for="compareHighRadius" class="form-label">High Radius</label>
-								<input type="number" class="form-control" id="compareHighRadius"
+								<label for="compare-HighRadius" class="form-label">High Radius</label>
+								<input type="number" class="form-control" id="compare-HighRadius"
 									placeholder="Enter high radius">
 							</div>
 
 							<!-- Center Radius -->
 							<div class="">
-								<label for="compareCenterRadius" class="form-label">Center Radius</label>
-								<input type="number" class="form-control" id="compareCenterRadius"
+								<label for="compare-CenterRadius" class="form-label">Center Radius</label>
+								<input type="number" class="form-control" id="compare-CenterRadius"
 									placeholder="Enter center radius">
 							</div>
 
 							<!-- Low Radius -->
 							<div class="">
-								<label for="compareLowRadius" class="form-label">Low Radius</label>
-								<input type="number" class="form-control" id="compareLowRadius" placeholder="Enter low radius">
+								<label for="compare-LowRadius" class="form-label">Low Radius</label>
+								<input type="number" class="form-control" id="compare-LowRadius" placeholder="Enter low radius">
 							</div>
 						</div>
 
@@ -310,56 +310,63 @@
 					<div class="row">
 
 						<table class="table table-striped">
+							<colgroup>
+								<col> <!--Label-->
+								<col> <!--Radius-->
+								<col> <!--Chord-->
+								<col class="d-none"> <!--Arc Length-->
+								<col> <!--Cut Length-->
+							</colgroup>
 							<thead>
 								<tr>
 									<th scope="col"></th>
 									<th scope="col">Radius</th>
 									<th scope="col">Chord</th>
-									<th scope="col">Arc Length</th>
+									<th scope="col" class="d-none">Arc Length</th>
 									<th scope="col">Cut Length</th>
 								</tr>
 							</thead>
 							<tbody>
-								<tr>
+								<tr id="compare-r6">
 									<th scope="row">R6</th>
 									<td id="compare-r6-radius">-</td>
 									<td id="compare-r6-chord">-</td>
-									<td id="compare-r6-arc">-</td>
+									<td id="compare-r6-arc" class="d-none">-</td>
 									<td id="compare-r6-cut">-</td>
 								</tr>
-								<tr>
+								<tr id="compare-r5">
 									<th scope="row">R5</th>
 									<td id="compare-r5-radius">-</td>
 									<td id="compare-r5-chord">-</td>
-									<td id="compare-r5-arc">-</td>
+									<td id="compare-r5-arc" class="d-none">-</td>
 									<td id="compare-r5-cut">-</td>
 								</tr>
-								<tr>
+								<tr id="compare-r4">
 									<th scope="row">R4</th>
 									<td id="compare-r4-radius">-</td>
 									<td id="compare-r4-chord">-</td>
-									<td id="compare-r4-arc">-</td>
+									<td id="compare-r4-arc" class="d-none">-</td>
 									<td id="compare-r4-cut">-</td>
 								</tr>
-								<tr>
+								<tr id="compare-r3">
 									<th scope="row">R3</th>
 									<td id="compare-r3-radius">-</td>
 									<td id="compare-r3-chord">-</td>
-									<td id="compare-r3-arc">-</td>
+									<td id="compare-r3-arc" class="d-none">-</td>
 									<td id="compare-r3-cut">-</td>
 								</tr>
-								<tr>
+								<tr id="compare-r2">
 									<th scope="row">R2</th>
 									<td id="compare-r2-radius">-</td>
 									<td id="compare-r2-chord">-</td>
-									<td id="compare-r2-arc">-</td>
+									<td id="compare-r2-arc" class="d-none">-</td>
 									<td id="compare-r2-cut">-</td>
 								</tr>
-								<tr>
+								<tr id="compare-r1">
 									<th scope="row">R1</th>
 									<td id="compare-r1-radius">-</td>
 									<td id="compare-r1-chord">-</td>
-									<td id="compare-r1-arc">-</td>
+									<td id="compare-r1-arc" class="d-none">-</td>
 									<td id="compare-r1-cut">-</td>
 								</tr>
 							</tbody>
