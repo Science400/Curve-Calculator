@@ -1004,6 +1004,8 @@ const applyScheme = (scheme) => {
     localStorage.setItem('color-scheme', scheme);
     document.documentElement.style.setProperty('color-scheme', scheme);
     document.querySelector(`[name="color-scheme"][value="${scheme}"]`).checked = true;
+    document.getElementById('table-measured').className = `table table-${scheme} table-striped`;
+    document.getElementById('table-compare').className = `table table-${scheme} table-striped`;
 }
 
 applyScheme(selectedColorScheme);

@@ -1,24 +1,37 @@
 :root {
     --flexoki-black: #100F0F;
     --flexoki-base-950: #1C1B1A;
-    --flexoki-base-900: #282726
+    --flexoki-base-900: #282726;
+    --flexoki-base-850: #343331;
+    --flexoki-base-800: #403E3C;
+    --flexoki-base-700: #575653;
+    --flexoki-base-600: #6F6E69;
+    --flexoki-base-500: #878580;
+    --flexoki-base-300: #B7B5AC;
     --flexoki-base-200: #CECDC3;
-    --flexoki-base-100: #E6E4D9
+    --flexoki-base-150: #DAD8CE;
+    --flexoki-base-100: #E6E4D9;
     --flexoki-base-50: #F2F0E5;
-    --flexoki-paper: #FFFCF0
+    --flexoki-paper: #FFFCF0;
 }
 
 body {
-    background-color: light-dark(var(--flexoki-paper), var(--flexoki-black));
-    color: light-dark(var(--flexoki-black), var(--flexoki-base-200));
+    background-color: light-dark(var(--flexoki-paper), var(--flexoki-black)); /* bg */
+    color: light-dark(var(--flexoki-black), var(--flexoki-base-200)); /* tx */
     font-family: "Fira Code", monospace;
     font-weight: 400;
 }
 
 input[type="number"], select, .form-select {
-    background-color: light-dark(var(--flexoki-base-50), var(--flexoki-base-950));
-    color: light-dark(var(--flexoki-black), var(--flexoki-base-200));
-    border-color: light-dark(var(--flexoki-base-100), var(--flexoki-base-900));
+    background-color: light-dark(var(--flexoki-base-50), var(--flexoki-base-950)); /* bg-2 */
+    color: light-dark(var(--flexoki-black), var(--flexoki-base-200)); /* tx */
+    border: 1px solid light-dark(var(--flexoki-base-200), var(--flexoki-base-800)); /* ui */
+}
+
+input[type="number"]:disabled, input[type="text"]:disabled {
+    background-color: light-dark(var(--flexoki-base-300), var(--flexoki-base-700)); /* tx-3 */
+    color: light-dark(var(--flexoki-base-600), var(--flexoki-base-500)); /* tx-2 */
+    border: 1px solid light-dark(var(--flexoki-base-200), var(--flexoki-base-800)); /* ui-3 */
 }
 
 .fira-mono-regular {
