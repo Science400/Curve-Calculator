@@ -1,0 +1,343 @@
+:root {
+    --flexoki-black: #100F0F;
+    --flexoki-base-950: #1C1B1A;
+    --flexoki-base-900: #282726;
+    --flexoki-base-850: #343331;
+    --flexoki-base-800: #403E3C;
+    --flexoki-base-700: #575653;
+    --flexoki-base-600: #6F6E69;
+    --flexoki-base-500: #878580;
+    --flexoki-base-300: #B7B5AC;
+    --flexoki-base-200: #CECDC3;
+    --flexoki-base-150: #DAD8CE;
+    --flexoki-base-100: #E6E4D9;
+    --flexoki-base-50: #F2F0E5;
+    --flexoki-paper: #FFFCF0;
+
+    /* Flexoki Accent Colors */
+    --flexoki-red-600: #AF3029;
+    --flexoki-red-400: #D14D41;
+    --flexoki-green-600: #66800B;
+    --flexoki-green-400: #879A39;
+    --flexoki-blue-600: #205EA6;
+    --flexoki-blue-400: #4385BE;
+}
+
+body {
+    background-color: light-dark(var(--flexoki-paper), var(--flexoki-black)); /* bg */
+    color: light-dark(var(--flexoki-black), var(--flexoki-base-200)); /* tx */
+    font-family: "Fira Code", monospace;
+    font-weight: 400;
+}
+
+input[type="number"], select, .form-select {
+    background-color: light-dark(var(--flexoki-base-50), var(--flexoki-base-950)); /* bg-2 */
+    color: light-dark(var(--flexoki-black), var(--flexoki-base-200)); /* tx */
+    border: 1px solid light-dark(var(--flexoki-base-200), var(--flexoki-base-800)); /* ui */
+}
+
+input[type="number"]:disabled, input[type="text"]:disabled {
+    background-color: light-dark(var(--flexoki-base-300), var(--flexoki-base-700)); /* tx-3 */
+    color: light-dark(var(--flexoki-base-600), var(--flexoki-base-500)); /* tx-2 */
+    border: 1px solid light-dark(var(--flexoki-base-200), var(--flexoki-base-800)); /* ui-3 */
+}
+
+/* Placeholder text styling */
+input::placeholder, select::placeholder, textarea::placeholder {
+    color: light-dark(var(--flexoki-base-500), var(--flexoki-base-500)) !important;
+    opacity: 0.7;
+}
+
+input:focus::placeholder {
+    opacity: 0.5;
+}
+
+/* Focus states for better visibility */
+input:focus, select:focus, textarea:focus {
+    outline: 2px solid light-dark(var(--flexoki-base-600), var(--flexoki-base-500));
+    outline-offset: 2px;
+}
+
+.fira-mono-regular {
+  font-family: "Fira Mono", monospace;
+  font-weight: 400;
+  font-style: normal;
+}
+
+.fira-mono-medium {
+  font-family: "Fira Mono", monospace;
+  font-weight: 500;
+  font-style: normal;
+}
+
+.fira-mono-bold {
+  font-family: "Fira Mono", monospace;
+  font-weight: 700;
+  font-style: normal;
+}
+
+
+.fira-code-regular {
+  font-family: "Fira Code", monospace;
+  font-optical-sizing: auto;
+  font-weight: 400;
+  font-style: normal;
+}
+
+/* Navbar Theming */
+.navbar {
+    background-color: light-dark(var(--flexoki-base-100), var(--flexoki-base-900)) !important;
+    border-bottom: 1px solid light-dark(var(--flexoki-base-200), var(--flexoki-base-800));
+}
+
+.navbar-brand, .nav-link {
+    color: light-dark(var(--flexoki-black), var(--flexoki-base-200)) !important;
+}
+
+.nav-link:hover {
+    color: light-dark(var(--flexoki-base-700), var(--flexoki-base-300)) !important;
+}
+
+.navbar-toggler {
+    border-color: light-dark(var(--flexoki-base-300), var(--flexoki-base-700));
+}
+
+.navbar-toggler-icon {
+    background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 30 30'%3e%3cpath stroke='rgba(0, 0, 0, 0.75)' stroke-linecap='round' stroke-miterlimit='10' stroke-width='2' d='M4 7h22M4 15h22M4 23h22'/%3e%3c/svg%3e");
+}
+
+@media (prefers-color-scheme: dark) {
+    .navbar-toggler-icon {
+        background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 30 30'%3e%3cpath stroke='rgba(206, 205, 195, 0.75)' stroke-linecap='round' stroke-miterlimit='10' stroke-width='2' d='M4 7h22M4 15h22M4 23h22'/%3e%3c/svg%3e");
+    }
+}
+
+/* Table Theming */
+.table {
+    --bs-table-bg: transparent;
+    color: light-dark(var(--flexoki-black), var(--flexoki-base-200));
+    border-color: light-dark(var(--flexoki-base-200), var(--flexoki-base-800));
+}
+
+.table thead th {
+    background-color: light-dark(var(--flexoki-base-150), var(--flexoki-base-850));
+    color: light-dark(var(--flexoki-black), var(--flexoki-base-200));
+    border-color: light-dark(var(--flexoki-base-300), var(--flexoki-base-700));
+}
+
+.table tbody td, .table tbody th {
+    border-color: light-dark(var(--flexoki-base-200), var(--flexoki-base-800));
+}
+
+.table-striped > tbody > tr:nth-of-type(odd) > * {
+    --bs-table-bg-type: light-dark(var(--flexoki-base-50), var(--flexoki-base-950));
+    color: light-dark(var(--flexoki-black), var(--flexoki-base-200));
+}
+
+.table-striped > tbody > tr:nth-of-type(even) > * {
+    --bs-table-bg-type: light-dark(var(--flexoki-paper), var(--flexoki-base-900));
+    color: light-dark(var(--flexoki-black), var(--flexoki-base-200));
+}
+
+/* Spec Cell Status Colors with Flexoki Accents */
+.spec-pass {
+    background-color: light-dark(rgba(102, 128, 11, 0.15), rgba(135, 154, 57, 0.15)) !important;
+    color: light-dark(var(--flexoki-green-600), var(--flexoki-green-400)) !important;
+    font-weight: bold;
+    text-align: center;
+    font-size: 1.1rem;
+}
+
+.spec-fail {
+    background-color: light-dark(rgba(175, 48, 41, 0.15), rgba(209, 77, 65, 0.15)) !important;
+    color: light-dark(var(--flexoki-red-600), var(--flexoki-red-400)) !important;
+    font-weight: bold;
+    text-align: center;
+    font-size: 1.1rem;
+}
+
+/* Form Elements */
+.form-label {
+    color: light-dark(var(--flexoki-black), var(--flexoki-base-200));
+}
+
+.form-check-input {
+    background-color: light-dark(var(--flexoki-base-50), var(--flexoki-base-950));
+    border-color: light-dark(var(--flexoki-base-300), var(--flexoki-base-700));
+}
+
+.form-check-input:checked {
+    background-color: light-dark(var(--flexoki-base-600), var(--flexoki-base-500));
+    border-color: light-dark(var(--flexoki-base-600), var(--flexoki-base-500));
+}
+
+.form-check-label {
+    color: light-dark(var(--flexoki-black), var(--flexoki-base-200));
+}
+
+/* Auto-Managed Field Indicators */
+.auto-indicator {
+    background-color: light-dark(var(--flexoki-base-150), var(--flexoki-base-850));
+    color: light-dark(var(--flexoki-base-600), var(--flexoki-base-500));
+    border: 1px solid light-dark(var(--flexoki-base-200), var(--flexoki-base-800));
+    font-size: 0.75rem;
+    padding: 0.25rem 0.5rem;
+}
+
+.auto-indicator.manual-mode {
+    background-color: light-dark(rgba(32, 94, 166, 0.15), rgba(67, 133, 190, 0.15));
+    color: light-dark(var(--flexoki-blue-600), var(--flexoki-blue-400));
+    font-weight: 500;
+}
+
+.reset-to-auto {
+    font-size: 0.875rem;
+    padding: 0.25rem 0.5rem;
+    border: 1px solid light-dark(var(--flexoki-base-300), var(--flexoki-base-700));
+    visibility: hidden; /* Use visibility instead of display to maintain layout */
+}
+
+.reset-to-auto.visible {
+    visibility: visible;
+}
+
+.reset-to-auto:hover {
+    background-color: light-dark(var(--flexoki-base-150), var(--flexoki-base-850));
+    color: light-dark(var(--flexoki-blue-600), var(--flexoki-blue-400));
+}
+
+.input-group .form-control {
+    border-right: none;
+}
+
+.input-group .auto-indicator {
+    border-left: none;
+}
+
+/* Footer Theming */
+footer {
+    background-color: light-dark(var(--flexoki-base-100), var(--flexoki-base-900));
+    color: light-dark(var(--flexoki-base-700), var(--flexoki-base-300));
+    border-top: 1px solid light-dark(var(--flexoki-base-200), var(--flexoki-base-800));
+    padding: 1rem;
+    margin-top: 2rem;
+}
+
+footer label {
+    color: light-dark(var(--flexoki-base-700), var(--flexoki-base-300));
+    margin-left: 0.5rem;
+    margin-right: 0.5rem;
+}
+
+footer input[type="radio"] {
+    accent-color: light-dark(var(--flexoki-base-600), var(--flexoki-base-500));
+}
+
+/* Consistent Text Colors */
+h1, h2, h3, h4, h5, h6 {
+    color: light-dark(var(--flexoki-black), var(--flexoki-base-200));
+}
+
+/* Bootstrap Validation States */
+.is-valid {
+    border-color: light-dark(#5a7a5a, #4a6a4a) !important;
+}
+
+.is-invalid {
+    border-color: light-dark(#7a5a5a, #6a4a4a) !important;
+}
+
+/* Compare Column Toggle Styles */
+#compareColumnToggle {
+    cursor: pointer;
+}
+
+.form-switch .form-check-input {
+    width: 3em;
+    height: 1.5em;
+    cursor: pointer;
+    background-color: light-dark(var(--flexoki-base-300), var(--flexoki-base-700));
+    border: 2px solid light-dark(var(--flexoki-base-500), var(--flexoki-base-600));
+}
+
+.form-switch .form-check-input:focus {
+    border-color: light-dark(var(--flexoki-blue-600), var(--flexoki-blue-400));
+    box-shadow: 0 0 0 0.25rem light-dark(rgba(32, 94, 166, 0.25), rgba(67, 133, 190, 0.25));
+}
+
+.form-switch .form-check-input:checked {
+    background-color: light-dark(var(--flexoki-blue-600), var(--flexoki-blue-400));
+    border-color: light-dark(var(--flexoki-blue-600), var(--flexoki-blue-400));
+}
+
+.form-switch .form-check-label {
+    cursor: pointer;
+    user-select: none;
+    color: light-dark(var(--flexoki-black), var(--flexoki-base-200));
+    font-weight: 500;
+}
+
+/* Compare column transitions */
+#compareColumn {
+    transition: opacity 0.3s ease-in-out, transform 0.3s ease-in-out;
+}
+
+#compareColumn.d-none {
+    display: none !important;
+}
+
+/* Center measured column when compare is hidden */
+.row.g-5.single-column #measuredColumn {
+    max-width: 800px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+/* Advanced Settings Styles */
+#advancedSettingsToggle {
+    background-color: light-dark(var(--flexoki-base-100), var(--flexoki-base-850));
+    color: light-dark(var(--flexoki-black), var(--flexoki-base-200));
+    border: 1px solid light-dark(var(--flexoki-base-300), var(--flexoki-base-700));
+    padding: 0.5rem 1rem;
+    font-size: 0.9rem;
+    transition: all 0.2s ease;
+}
+
+#advancedSettingsToggle:hover {
+    background-color: light-dark(var(--flexoki-base-150), var(--flexoki-base-800));
+    border-color: light-dark(var(--flexoki-base-500), var(--flexoki-base-600));
+}
+
+#advancedSettingsToggle:active,
+#advancedSettingsToggle:focus {
+    background-color: light-dark(var(--flexoki-base-200), var(--flexoki-base-750));
+    border-color: light-dark(var(--flexoki-base-600), var(--flexoki-base-500));
+    box-shadow: 0 0 0 0.2rem light-dark(rgba(87, 86, 83, 0.25), rgba(111, 110, 105, 0.25));
+}
+
+#advancedSettingsToggleIcon {
+    display: inline-block;
+    margin-left: 0.5rem;
+    font-size: 0.8rem;
+    transition: transform 0.3s ease;
+}
+
+#advancedSettings {
+    transition: all 0.3s ease-in-out;
+    overflow: hidden;
+    max-height: 0;
+}
+
+#advancedSettings.show {
+    max-height: 1000px;
+    padding-top: 1rem;
+}
+
+#advancedSettings h6 {
+    color: light-dark(var(--flexoki-base-700), var(--flexoki-base-300));
+    font-weight: 600;
+    text-transform: uppercase;
+    font-size: 0.85rem;
+    letter-spacing: 0.05em;
+}
+

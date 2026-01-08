@@ -1,10 +1,8 @@
 document.addEventListener("DOMContentLoaded", function () {
     // https://stackoverflow.com/a/79490464
     let radio_objects = document.querySelectorAll("input[type='radio'][name=gageType]");
-    for (let i = 0; i < radio_objects.length; i++)
-    {
-        radio_objects[i].addEventListener('click', function ()
-        {
+    for (let i = 0; i < radio_objects.length; i++) {
+        radio_objects[i].addEventListener('click', function () {
             document.getElementById(this.name).dataset.value = this.value;
         });
     }
@@ -19,68 +17,253 @@ document.addEventListener("DOMContentLoaded", function () {
     const fieldRubberWidthInput = document.getElementById("fieldRubberWidth");
     const railHeadWidthInput = document.getElementById("railHeadWidth");
     const gageRubberWidthInput = document.getElementById("gageRubberWidth");
-    const highRadiusInput = document.getElementById("highRadius");
-    const centerRadiusInput = document.getElementById("centerRadius");
-    const lowRadiusInput = document.getElementById("lowRadius");
-    const measuredDegree = document.getElementById("measuredDegree");
-    const roundedDownDegree = document.getElementById("roundedDownDegree");
-    const roundedUpDegree = document.getElementById("roundedUpDegree");
-    const measuredR6Input = document.getElementById("r6Measured");
-    const measuredR5Input = document.getElementById("r5Measured");
-    const measuredR4Input = document.getElementById("r4Measured");
-    const measuredR3Input = document.getElementById("r3Measured");
-    const measuredR2Input = document.getElementById("r2Measured");
-    const measuredR1Input = document.getElementById("r1Measured");
-    const measuredChord6Input = document.getElementById("chord6Measured");
-    const measuredChord5Input = document.getElementById("chord5Measured");
-    const measuredChord4Input = document.getElementById("chord4Measured");
-    const measuredChord3Input = document.getElementById("chord3Measured");
-    const measuredChord2Input = document.getElementById("chord2Measured");
-    const measuredChord1Input = document.getElementById("chord1Measured");
-    const roundedDownR6Input = document.getElementById("r6Down");
-    const roundedDownR5Input = document.getElementById("r5Down");
-    const roundedDownR4Input = document.getElementById("r4Down");
-    const roundedDownR3Input = document.getElementById("r3Down");
-    const roundedDownR2Input = document.getElementById("r2Down");
-    const roundedDownR1Input = document.getElementById("r1Down");
-    const roundedUpR6Input = document.getElementById("r6Up");
-    const roundedUpR5Input = document.getElementById("r5Up");
-    const roundedUpR4Input = document.getElementById("r4Up");
-    const roundedUpR3Input = document.getElementById("r3Up");
-    const roundedUpR2Input = document.getElementById("r2Up");
-    const roundedUpR1Input = document.getElementById("r1Up");
-    const roundedDownChord6Input = document.getElementById("chord6Down");
-    const roundedDownChord5Input = document.getElementById("chord5Down");
-    const roundedDownChord4Input = document.getElementById("chord4Down");
-    const roundedDownChord3Input = document.getElementById("chord3Down");
-    const roundedDownChord2Input = document.getElementById("chord2Down");
-    const roundedDownChord1Input = document.getElementById("chord1Down");
-    const roundedUpChord6Input = document.getElementById("chord6Up");
-    const roundedUpChord5Input = document.getElementById("chord5Up");
-    const roundedUpChord4Input = document.getElementById("chord4Up");
-    const roundedUpChord3Input = document.getElementById("chord3Up");
-    const roundedUpChord2Input = document.getElementById("chord2Up");
-    const roundedUpChord1Input = document.getElementById("chord1Up");
-    const measuredRiseInput = document.getElementById("measuredRise");
+    const compareColumnToggle = document.getElementById("compareColumnToggle");
+    const compareColumn = document.getElementById("compareColumn");
+    const calculationsRow = compareColumn.parentElement; // The row.g-5 container
+
+    // Auto-managed field indicators
+    const panelTypeBadge = document.getElementById("panelType-badge");
+    const panelTypeReset = document.getElementById("panelType-reset");
+    const panelLengthBadge = document.getElementById("panelLength-badge");
+    const panelLengthReset = document.getElementById("panelLength-reset");
+    const gageWidthBadge = document.getElementById("gageWidth-badge");
+    const gageWidthReset = document.getElementById("gageWidth-reset");
+    const fieldWidthBadge = document.getElementById("fieldWidth-badge");
+    const fieldWidthReset = document.getElementById("fieldWidth-reset");
+    const railSizeBadge = document.getElementById("railSize-badge");
+    const railSizeReset = document.getElementById("railSize-reset");
+    const fieldRubberWidthBadge = document.getElementById("fieldRubberWidth-badge");
+    const fieldRubberWidthReset = document.getElementById("fieldRubberWidth-reset");
+    const railHeadWidthBadge = document.getElementById("railHeadWidth-badge");
+    const railHeadWidthReset = document.getElementById("railHeadWidth-reset");
+    const gageRubberWidthBadge = document.getElementById("gageRubberWidth-badge");
+    const gageRubberWidthReset = document.getElementById("gageRubberWidth-reset");
+
+    const measuredElements = {
+        "degree": document.getElementById("degreeOfCurve"),
+        "rise": document.getElementById("measuredRise"),
+        "highRadius": document.getElementById("highRadius"),
+        "centerRadius": document.getElementById("centerRadius"),
+        "lowRadius": document.getElementById("lowRadius"),
+        "r6": {
+            "radius": document.getElementById("measured-r6-radius"),
+            "chord": document.getElementById("measured-r6-chord"),
+            "arcLength": document.getElementById("measured-r6-arc"),
+            "cutLength": document.getElementById("measured-r6-cut")
+        },
+        "r5": {
+            "radius": document.getElementById("measured-r5-radius"),
+            "chord": document.getElementById("measured-r5-chord"),
+            "arcLength": document.getElementById("measured-r5-arc"),
+            "cutLength": document.getElementById("measured-r5-cut")
+        },
+        "r4": {
+            "radius": document.getElementById("measured-r4-radius"),
+            "chord": document.getElementById("measured-r4-chord"),
+            "arcLength": document.getElementById("measured-r4-arc"),
+            "cutLength": document.getElementById("measured-r4-cut")
+        },
+        "r3": {
+            "radius": document.getElementById("measured-r3-radius"),
+            "chord": document.getElementById("measured-r3-chord"),
+            "arcLength": document.getElementById("measured-r3-arc"),
+            "cutLength": document.getElementById("measured-r3-cut")
+        },
+        "r2": {
+            "radius": document.getElementById("measured-r2-radius"),
+            "chord": document.getElementById("measured-r2-chord"),
+            "arcLength": document.getElementById("measured-r2-arc"),
+            "cutLength": document.getElementById("measured-r2-cut")
+        },
+        "r1": {
+            "radius": document.getElementById("measured-r1-radius"),
+            "chord": document.getElementById("measured-r1-chord"),
+            "arcLength": document.getElementById("measured-r1-arc"),
+            "cutLength": document.getElementById("measured-r1-cut")
+        }
+    };
+
+    const measuredValues = {
+        "degree": "",
+        "rise": "",
+        "highRadius": "",
+        "centerRadius": "",
+        "lowRadius": "",
+        "r6": {
+            "radius": "",
+            "chord": "",
+            "arcLength": "",
+            "cutLength": ""
+        },
+        "r5": {
+            "radius": "",
+            "chord": "",
+            "arcLength": "",
+            "cutLength": ""
+        },
+        "r4": {
+            "radius": "",
+            "chord": "",
+            "arcLength": "",
+            "cutLength": ""
+        },
+        "r3": {
+            "radius": "",
+            "chord": "",
+            "arcLength": "",
+            "cutLength": ""
+        },
+        "r2": {
+            "radius": "",
+            "chord": "",
+            "arcLength": "",
+            "cutLength": ""
+        },
+        "r1": {
+            "radius": "",
+            "chord": "",
+            "arcLength": "",
+            "cutLength": ""
+        }
+    };
+
+    
+    const compareElements = {
+        "degree": document.getElementById("compare-degreeOfCurve"),
+        "rise": document.getElementById("compare-Rise"),
+        "highRadius": document.getElementById("compare-highRadius"),
+        "centerRadius": document.getElementById("compare-centerRadius"),
+        "lowRadius": document.getElementById("compare-lowRadius"),
+        "r6": {
+            "radius": document.getElementById("compare-r6-radius"),
+            "chord": document.getElementById("compare-r6-chord"),
+            "arcLength": document.getElementById("compare-r6-arc"),
+            "cutLength": document.getElementById("compare-r6-cut"),
+            "spec": document.getElementById("compare-r6-spec")
+        },
+        "r5": {
+            "radius": document.getElementById("compare-r5-radius"),
+            "chord": document.getElementById("compare-r5-chord"),
+            "arcLength": document.getElementById("compare-r5-arc"),
+            "cutLength": document.getElementById("compare-r5-cut"),
+            "spec": document.getElementById("compare-r5-spec")
+        },
+        "r4": {
+            "radius": document.getElementById("compare-r4-radius"),
+            "chord": document.getElementById("compare-r4-chord"),
+            "arcLength": document.getElementById("compare-r4-arc"),
+            "cutLength": document.getElementById("compare-r4-cut"),
+            "spec": document.getElementById("compare-r4-spec")
+        },
+        "r3": {
+            "radius": document.getElementById("compare-r3-radius"),
+            "chord": document.getElementById("compare-r3-chord"),
+            "arcLength": document.getElementById("compare-r3-arc"),
+            "cutLength": document.getElementById("compare-r3-cut"),
+            "spec": document.getElementById("compare-r3-spec")
+        },
+        "r2": {
+            "radius": document.getElementById("compare-r2-radius"),
+            "chord": document.getElementById("compare-r2-chord"),
+            "arcLength": document.getElementById("compare-r2-arc"),
+            "cutLength": document.getElementById("compare-r2-cut"),
+            "spec": document.getElementById("compare-r2-spec")
+        },
+        "r1": {
+            "radius": document.getElementById("compare-r1-radius"),
+            "chord": document.getElementById("compare-r1-chord"),
+            "arcLength": document.getElementById("compare-r1-arc"),
+            "cutLength": document.getElementById("compare-r1-cut"),
+            "spec": document.getElementById("compare-r1-spec")
+        }
+    };
+
+    const compareValues = {
+        "degree": "",
+        "rise": "",
+        "highRadius": "",
+        "centerRadius": "",
+        "lowRadius": "",
+        "r6": {
+            "radius": "",
+            "chord": "",
+            "arcLength": "",
+            "cutLength": ""
+        },
+        "r5": {
+            "radius": "",
+            "chord": "",
+            "arcLength": "",
+            "cutLength": ""
+        },
+        "r4": {
+            "radius": "",
+            "chord": "",
+            "arcLength": "",
+            "cutLength": ""
+        },
+        "r3": {
+            "radius": "",
+            "chord": "",
+            "arcLength": "",
+            "cutLength": ""
+        },
+        "r2": {
+            "radius": "",
+            "chord": "",
+            "arcLength": "",
+            "cutLength": ""
+        },
+        "r1": {
+            "radius": "",
+            "chord": "",
+            "arcLength": "",
+            "cutLength": ""
+        }
+    };
 
 
-    var railSizeModified = false;
-    var panelTypeModified = false;
+
+    // Auto-managed field state tracking
+    var autoManagedFields = {
+        panelType: true,
+        gageType: true,
+        panelLength: true,
+        gageWidth: true,
+        fieldWidth: true,
+        railSize: true,
+        fieldRubberWidth: true,
+        railHeadWidth: true,
+        gageRubberWidth: true
+    };
+
+    // Store current panel defaults for comparison
+    var currentPanelDefaults = {
+        gageType: null,
+        panelLength: null,
+        gageWidth: null,
+        fieldWidth: null,
+        railSize: null,
+        fieldRubberWidth: null,
+        railHeadWidth: null,
+        gageRubberWidth: null
+    };
 
     var theta = 0; // Initialize theta variable
+    var isCompareColumnVisible = false; // Default hidden
 
 
     // Rail Head Widths
     const railHeadWidths = {
-        "90": (2 + 9/16)/12,
-        "110": (2 + 5/8)/12,
-        "115": (2 + 11/16)/12,
-        "119": (2 + 5/8)/12,
-        "132": (2 + 15/16)/12,
-        "133": (2 + 7/8)/12,
-        "136": (2 + 7/8)/12,
-        "140": (2 + 15/16)/12,
-        "141": (3)/12
+        "90": (2 + 9 / 16) / 12,
+        "110": (2 + 5 / 8) / 12,
+        "115": (2 + 11 / 16) / 12,
+        "119": (2 + 5 / 8) / 12,
+        "132": (2 + 15 / 16) / 12,
+        "133": (2 + 7 / 8) / 12,
+        "136": (2 + 7 / 8) / 12,
+        "140": (2 + 15 / 16) / 12,
+        "141": (3) / 12
     };
 
     // Populate the select element with rail sizes
@@ -118,29 +301,6 @@ document.addEventListener("DOMContentLoaded", function () {
         railHeadWidthInput.value = railHeadWidths[railSize].toFixed(3);
     }
 
-    function setRailSizeModified(modified, railSize) {
-        // If railSize is not provided, use the currently selected rail size
-        const targetRailSize = railSize || railSizeSelect.value;
-        
-        if (modified) {
-            // Update the specified option in the select element to say (modified)
-            const selectedOption = railSizeSelect.querySelector(`option[value="${targetRailSize}"]`);
-            if (selectedOption) {
-                selectedOption.textContent = `#${targetRailSize} (modified)`;
-            }
-        }
-        else {
-            // Reset the specified option in the select element to its original text
-            const selectedOption = railSizeSelect.querySelector(`option[value="${targetRailSize}"]`);
-            if (selectedOption) {
-                selectedOption.textContent = `#${targetRailSize}`;
-            }
-        }
-        
-        if (targetRailSize === railSizeSelect.value) {
-            railSizeModified = modified;
-        }
-    }
 
     // function updateRailHeadWidth() {
     //     const selectedSize = railSizeSelect.value;
@@ -162,22 +322,22 @@ document.addEventListener("DOMContentLoaded", function () {
         "1301": {
             "gageType": "standard",
             "panelLength": 8.125,
-            "gageWidth": 50.50/12,
-            "fieldWidth": 27/12,
+            "gageWidth": 50.50 / 12,
+            "fieldWidth": 27 / 12,
             "railSize": "133",
-            "fieldRubberWidth": 2.5/12,
-            "railHeadWidth": 3/12,
-            "gageRubberWidth": 3/12
+            "fieldRubberWidth": 2.5 / 12,
+            "railHeadWidth": 3 / 12,
+            "gageRubberWidth": 3 / 12
         },
         "1310": {
             "gageType": "pedestrian",
             "panelLength": 10,
-            "gageWidth": 51.50/12,
-            "fieldWidth": 18/12,
+            "gageWidth": 51.50 / 12,
+            "fieldWidth": 18 / 12,
             "railSize": "115",
-            "fieldRubberWidth": 2.5/12,
-            "railHeadWidth": (2 + 11/16)/12,
-            "gageRubberWidth": 2.5/12
+            "fieldRubberWidth": 2.5 / 12,
+            "railHeadWidth": (2 + 11 / 16) / 12,
+            "gageRubberWidth": 2.5 / 12
         },
         "1315": {
         }
@@ -205,34 +365,11 @@ document.addEventListener("DOMContentLoaded", function () {
         if (optionExists) {
             panelTypeSelect.value = panelType;
             setPanelTypeDefaults(panelType);
-            setPanelTypeModified(false, panelType);
         } else {
             console.warn(`Panel type ${panelType} does not exist in the options.`);
         }
     }
 
-    function setPanelTypeModified(modified, panelType) {
-        // If panelType is not provided, use the currently selected panel type
-        const targetPanelType = panelType || panelTypeSelect.value;
-        
-        if (modified) {
-            // Update the specified option in the select element to say (modified)
-            const selectedOption = panelTypeSelect.querySelector(`option[value="${targetPanelType}"]`);
-            if (selectedOption) {
-                selectedOption.textContent = `${targetPanelType} (modified)`;
-            }
-        } else {
-            // Reset the specified option in the select element to its original text
-            const selectedOption = panelTypeSelect.querySelector(`option[value="${targetPanelType}"]`);
-            if (selectedOption) {
-                selectedOption.textContent = targetPanelType;
-            }
-        }
-        
-        if (targetPanelType === panelTypeSelect.value) {
-            panelTypeModified = modified;
-        }
-    }
 
     // Gage Type
     function getGageType() {
@@ -279,9 +416,9 @@ document.addEventListener("DOMContentLoaded", function () {
         if (validGageTypes.includes(gageType)) {
             // Set gage width based on gage type
             if (gageType === "standard") {
-                gageWidthInput.value = 50.50/12; // Example value for standard gage
+                gageWidthInput.value = 50.50 / 12; // Example value for standard gage
             } else if (gageType === "pedestrian") {
-                gageWidthInput.value = 51.50/12; // Example value for pedestrian gage
+                gageWidthInput.value = 51.50 / 12; // Example value for pedestrian gage
             }
         } else {
             console.warn(`Invalid gage type: ${gageType}`);
@@ -328,39 +465,296 @@ document.addEventListener("DOMContentLoaded", function () {
         }
     }
 
+    /**
+     * Updates the visual indicator for auto-managed fields
+     * @param {string} fieldName - Field name (e.g., 'panelType', 'panelLength', 'gageWidth', etc.)
+     */
+    function updateAutoIndicator(fieldName) {
+        const isAuto = autoManagedFields[fieldName];
+        let badge, resetBtn;
+
+        // Map field names to their badge and reset button elements
+        const fieldMap = {
+            'panelType': { badge: panelTypeBadge, resetBtn: panelTypeReset },
+            'panelLength': { badge: panelLengthBadge, resetBtn: panelLengthReset },
+            'gageWidth': { badge: gageWidthBadge, resetBtn: gageWidthReset },
+            'fieldWidth': { badge: fieldWidthBadge, resetBtn: fieldWidthReset },
+            'railSize': { badge: railSizeBadge, resetBtn: railSizeReset },
+            'fieldRubberWidth': { badge: fieldRubberWidthBadge, resetBtn: fieldRubberWidthReset },
+            'railHeadWidth': { badge: railHeadWidthBadge, resetBtn: railHeadWidthReset },
+            'gageRubberWidth': { badge: gageRubberWidthBadge, resetBtn: gageRubberWidthReset }
+        };
+
+        const field = fieldMap[fieldName];
+        if (!field || !field.badge || !field.resetBtn) return;
+
+        badge = field.badge;
+        resetBtn = field.resetBtn;
+
+        if (isAuto) {
+            badge.innerHTML = '<small>Auto</small>';
+            badge.classList.remove('manual-mode');
+            resetBtn.classList.remove('visible');
+        } else {
+            badge.innerHTML = '<small>Manual</small>';
+            badge.classList.add('manual-mode');
+            resetBtn.classList.add('visible');
+        }
+    }
+
+    /**
+     * Switches a field to manual mode
+     * @param {string} fieldName - Any auto-managed field name
+     */
+    function setFieldManualMode(fieldName) {
+        if (autoManagedFields[fieldName]) {
+            autoManagedFields[fieldName] = false;
+            updateAutoIndicator(fieldName);
+
+            // Set panel type to manual mode if any setting is manually changed
+            if (fieldName !== 'panelType') {
+                autoManagedFields.panelType = false;
+                updateAutoIndicator('panelType');
+            }
+        }
+    }
+
+    /**
+     * Resets a field back to auto-managed mode
+     * @param {string} fieldName - Any auto-managed field name (or 'panelType' for master reset)
+     */
+    function resetFieldToAuto(fieldName) {
+        // Special case: Panel Type reset button resets ALL fields
+        if (fieldName === 'panelType') {
+            resetAllFieldsToAuto();
+            return;
+        }
+
+        autoManagedFields[fieldName] = true;
+        updateAutoIndicator(fieldName);
+
+        // Check if all fields are now auto - if so, reset Panel Type to auto
+        checkAndUpdatePanelTypeAuto();
+
+        // Reapply the panel default value
+        const currentPanelType = getPanelType();
+        if (panelDefaults[currentPanelType]) {
+            const defaults = panelDefaults[currentPanelType];
+
+            if (fieldName === 'gageType') {
+                const gageType = defaults.gageType || "standard";
+                setGageType(gageType);
+                currentPanelDefaults.gageType = gageType;
+            } else if (fieldName === 'panelLength' && defaults.panelLength !== undefined) {
+                setPanelLength(defaults.panelLength);
+                currentPanelDefaults.panelLength = defaults.panelLength;
+            } else if (fieldName === 'gageWidth') {
+                const gageType = defaults.gageType || "standard";
+                setGageWidth(gageType);
+                currentPanelDefaults.gageWidth = (gageType === "standard" ? 50.50 / 12 : 51.50 / 12);
+            } else if (fieldName === 'fieldWidth' && defaults.fieldWidth !== undefined) {
+                setFieldWidth(defaults.fieldWidth);
+                currentPanelDefaults.fieldWidth = defaults.fieldWidth;
+            } else if (fieldName === 'railSize' && defaults.railSize !== undefined) {
+                setRailSize(defaults.railSize);
+                currentPanelDefaults.railSize = defaults.railSize;
+            } else if (fieldName === 'fieldRubberWidth' && defaults.fieldRubberWidth !== undefined) {
+                setFieldRubberWidth(defaults.fieldRubberWidth);
+                currentPanelDefaults.fieldRubberWidth = defaults.fieldRubberWidth;
+            } else if (fieldName === 'railHeadWidth' && defaults.railSize !== undefined) {
+                setRailHeadWidth(defaults.railSize);
+                currentPanelDefaults.railHeadWidth = railHeadWidths[defaults.railSize];
+            } else if (fieldName === 'gageRubberWidth' && defaults.gageRubberWidth !== undefined) {
+                setGageRubberWidth(defaults.gageRubberWidth);
+                currentPanelDefaults.gageRubberWidth = defaults.gageRubberWidth;
+            }
+        }
+
+        // Recalculate if we have a center radius
+        if (measuredValues.centerRadius) {
+            calculateAndUpdateFromCenterRadius(measuredValues.centerRadius);
+        }
+    }
+
+    /**
+     * Resets ALL fields to auto-managed mode (master reset)
+     */
+    function resetAllFieldsToAuto() {
+        // Reset all fields to auto mode
+        for (let field in autoManagedFields) {
+            autoManagedFields[field] = true;
+        }
+
+        // Reapply all panel defaults
+        const currentPanelType = getPanelType();
+        setPanelTypeDefaults(currentPanelType);
+
+        // Update all indicators
+        updateAutoIndicator('panelType');
+        updateAutoIndicator('gageType');
+        updateAutoIndicator('panelLength');
+        updateAutoIndicator('gageWidth');
+        updateAutoIndicator('fieldWidth');
+        updateAutoIndicator('railSize');
+        updateAutoIndicator('fieldRubberWidth');
+        updateAutoIndicator('railHeadWidth');
+        updateAutoIndicator('gageRubberWidth');
+
+        // Recalculate if we have a center radius
+        if (measuredValues.centerRadius) {
+            calculateAndUpdateFromCenterRadius(measuredValues.centerRadius);
+        }
+    }
+
+    /**
+     * Checks if all non-panelType fields are in auto mode
+     * If yes, sets Panel Type back to auto mode
+     */
+    function checkAndUpdatePanelTypeAuto() {
+        const allFieldsAuto = Object.keys(autoManagedFields).every(key =>
+            key === 'panelType' || autoManagedFields[key]
+        );
+
+        if (allFieldsAuto && !autoManagedFields.panelType) {
+            autoManagedFields.panelType = true;
+            updateAutoIndicator('panelType');
+        }
+    }
+
+    /**
+     * Checks if a field value has been manually changed from panel default
+     * @param {string} fieldName - 'fieldRubberWidth' or 'gageRubberWidth'
+     * @param {number} currentValue - Current input value
+     * @returns {boolean} True if value differs from panel default
+     */
+    function isValueModifiedFromDefault(fieldName, currentValue) {
+        const defaultValue = currentPanelDefaults[fieldName];
+
+        // If no default stored yet, not modified
+        if (defaultValue === null || defaultValue === undefined) {
+            return false;
+        }
+
+        // Compare with small tolerance for floating point
+        const tolerance = 0.0001;
+        return Math.abs(currentValue - defaultValue) > tolerance;
+    }
+
 
     function setPanelTypeDefaults(panelType) {
         if (panelDefaults[panelType]) {
             const defaults = panelDefaults[panelType];
 
-            // Set gage type
+            // Set gage type (always set, not auto-managed separately)
             setGageType(defaults.gageType || "standard");
 
-            // Set panel length
-            setPanelLength(defaults.panelLength || 0);
+            // Set panel length (only if in auto mode)
+            if (autoManagedFields.panelLength) {
+                setPanelLength(defaults.panelLength || 0);
+                currentPanelDefaults.panelLength = defaults.panelLength || 0;
+            } else {
+                currentPanelDefaults.panelLength = defaults.panelLength || 0;
+            }
 
-            // Set gage width
-            // setGageWidth(defaults.gageType || 0);
+            // Set gage width (only if in auto mode)
+            if (autoManagedFields.gageWidth) {
+                setGageWidth(defaults.gageType || "standard");
+                const gageType = defaults.gageType || "standard";
+                currentPanelDefaults.gageWidth = (gageType === "standard" ? 50.50 / 12 : 51.50 / 12);
+            } else {
+                const gageType = defaults.gageType || "standard";
+                currentPanelDefaults.gageWidth = (gageType === "standard" ? 50.50 / 12 : 51.50 / 12);
+            }
 
-            // Set field width
-            setFieldWidth(defaults.fieldWidth || 0);
+            // Set field width (only if in auto mode)
+            if (autoManagedFields.fieldWidth) {
+                setFieldWidth(defaults.fieldWidth || 0);
+                currentPanelDefaults.fieldWidth = defaults.fieldWidth || 0;
+            } else {
+                currentPanelDefaults.fieldWidth = defaults.fieldWidth || 0;
+            }
 
-            // Set rail size
-            setRailSize(defaults.railSize || "133");
+            // Set rail size (only if in auto mode)
+            if (autoManagedFields.railSize) {
+                setRailSize(defaults.railSize || "133");
+                currentPanelDefaults.railSize = defaults.railSize || "133";
+            } else {
+                currentPanelDefaults.railSize = defaults.railSize || "133";
+            }
 
-            // Set field rubber width
-            setFieldRubberWidth(defaults.fieldRubberWidth || 0);
+            // Set field rubber width (only if in auto mode)
+            if (autoManagedFields.fieldRubberWidth) {
+                setFieldRubberWidth(defaults.fieldRubberWidth || 0);
+                currentPanelDefaults.fieldRubberWidth = defaults.fieldRubberWidth || 0;
+            } else {
+                currentPanelDefaults.fieldRubberWidth = defaults.fieldRubberWidth || 0;
+            }
 
-            // Set rail head width
-            setRailHeadWidth(defaults.railSize || "133");
+            // Set rail head width (only if in auto mode)
+            if (autoManagedFields.railHeadWidth) {
+                setRailHeadWidth(defaults.railSize || "133");
+                currentPanelDefaults.railHeadWidth = railHeadWidths[defaults.railSize || "133"];
+            } else {
+                currentPanelDefaults.railHeadWidth = railHeadWidths[defaults.railSize || "133"];
+            }
 
-            // Set gage rubber width
-            setGageRubberWidth(defaults.gageRubberWidth || 0);
+            // Set gage rubber width (only if in auto mode)
+            if (autoManagedFields.gageRubberWidth) {
+                setGageRubberWidth(defaults.gageRubberWidth || 0);
+                currentPanelDefaults.gageRubberWidth = defaults.gageRubberWidth || 0;
+            } else {
+                currentPanelDefaults.gageRubberWidth = defaults.gageRubberWidth || 0;
+            }
 
+            // Update visual indicators for all fields
+            updateAutoIndicator('panelLength');
+            updateAutoIndicator('gageWidth');
+            updateAutoIndicator('fieldWidth');
+            updateAutoIndicator('railSize');
+            updateAutoIndicator('fieldRubberWidth');
+            updateAutoIndicator('railHeadWidth');
+            updateAutoIndicator('gageRubberWidth');
 
         } else {
             console.warn(`No defaults found for panel type: ${panelType}`);
         }
+    }
+
+    function initializeCompareColumnToggle() {
+        // Load saved state from localStorage
+        const savedState = localStorage.getItem('compare-column-visible');
+        isCompareColumnVisible = savedState === 'true'; // Default false if not set
+
+        // Set checkbox state
+        compareColumnToggle.checked = isCompareColumnVisible;
+
+        // Apply initial visibility
+        updateCompareColumnVisibility(false); // false = no animation on load
+    }
+
+    function updateCompareColumnVisibility(animate = true) {
+        if (isCompareColumnVisible) {
+            compareColumn.classList.remove('d-none');
+            calculationsRow.classList.remove('single-column');
+
+            // Recalculate compare values if we have measured data
+            if (measuredValues.centerRadius) {
+                const roundedDegree = Math.round(radiusToDegree(measuredValues.centerRadius));
+                const compareCenterRadius = degreeToRadius(roundedDegree);
+                calculateAndUpdateFromCenterRadius(compareCenterRadius, compareValues, compareElements);
+            }
+        } else {
+            compareColumn.classList.add('d-none');
+            calculationsRow.classList.add('single-column');
+        }
+
+        // Save state to localStorage
+        localStorage.setItem('compare-column-visible', isCompareColumnVisible);
+    }
+
+    function toggleCompareColumn() {
+        isCompareColumnVisible = !isCompareColumnVisible;
+        updateCompareColumnVisibility(true);
     }
 
     function setMeasuredDegree(centerRadius) {
@@ -391,12 +785,12 @@ document.addEventListener("DOMContentLoaded", function () {
         const measuredR2 = centerRadius - offset2;
         const measuredR1 = centerRadius - offset3;
 
-        measuredR6Input.value = measuredR6.toFixed(3);
-        measuredR5Input.value = measuredR5.toFixed(3);
-        measuredR4Input.value = measuredR4.toFixed(3);
-        measuredR3Input.value = measuredR3.toFixed(3);
-        measuredR2Input.value = measuredR2.toFixed(3);
-        measuredR1Input.value = measuredR1.toFixed(3);
+        measuredTable.r6.radius.innerText = measuredR6.toFixed(3);
+        measuredTable.r5.radius.innerText = measuredR5.toFixed(3);
+        measuredTable.r4.radius.innerText = measuredR4.toFixed(3);
+        measuredTable.r3.radius.innerText = measuredR3.toFixed(3);
+        measuredTable.r2.radius.innerText = measuredR2.toFixed(3);
+        measuredTable.r1.radius.innerText = measuredR1.toFixed(3);
     };
 
     function setRoundedDownRadii(centerRadius) {
@@ -495,7 +889,7 @@ document.addEventListener("DOMContentLoaded", function () {
         roundedDownChord1Input.value = roundedDownChordR1.toFixed(3);
 
         const measuredChord6 = parseFloat(measuredChord6Input.value) || 0;
-        if (roundedDownChordR6 > measuredChord6-((1/8)/12)) {
+        if (roundedDownChordR6 > measuredChord6 - ((1 / 8) / 12)) {
             roundedDownChord6Input.classList.add("is-valid");
             roundedDownChord6Input.classList.remove("is-invalid");
         }
@@ -532,7 +926,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
     }
 
-    
+
 
     function degreeToRadius(degree) {
         const CLradius = (degree / 12 / 2) + ((62 * 62) / (8 * degree / 12));
@@ -543,7 +937,7 @@ document.addEventListener("DOMContentLoaded", function () {
         const degree = 12 * (radius - Math.sqrt(radius * radius - 961));
         return degree;
     }
-    
+
     function setMeasuredRise(centerRadius) {
         const panelLength = getPanelLength();
         const theta = Math.asin(panelLength / (2 * centerRadius));
@@ -554,9 +948,182 @@ document.addEventListener("DOMContentLoaded", function () {
         measuredRiseInput.value = measuredRiseIn.toFixed(3);
     }
 
+    // Central calculation and update function for any value set (measured or compare)
+    function calculateAndUpdateFromCenterRadius(centerRadius, valuesObj = measuredValues, elementsObj = measuredElements) {
+        if (!centerRadius || isNaN(centerRadius)) return;
+
+        // Calculate all values
+        const panelLength = getPanelLength();
+        const degree = radiusToDegree(centerRadius);
+        const theta = Math.asin(panelLength / (2 * centerRadius));
+
+        // Calculate rise
+        const versine = 1 - Math.cos(theta);
+        const measuredRiseFt = centerRadius * versine;
+        const measuredRiseIn = measuredRiseFt * 12;
+
+        // Calculate offsets for radii
+        const offset1 = getGageWidth() / 2;
+        const offset2 = getGageWidth() / 2 + getGageRubberWidth() + getRailHeadWidth() + getFieldRubberWidth();
+        const offset3 = getGageWidth() / 2 + getGageRubberWidth() + getRailHeadWidth() + getFieldRubberWidth() + getFieldWidth();
+
+        // Update values object
+        valuesObj.degree = degree;
+        valuesObj.rise = measuredRiseIn;
+        valuesObj.centerRadius = centerRadius;
+        valuesObj.highRadius = centerRadius + (getRailHeadWidth() / 2 + getGageRubberWidth() + getGageWidth() / 2);
+        valuesObj.lowRadius = centerRadius - (getRailHeadWidth() / 2 + getGageRubberWidth() + getGageWidth() / 2);
+
+        // Calculate radii for all layers
+        const radii = {
+            r6: centerRadius + offset3,
+            r5: centerRadius + offset2,
+            r4: centerRadius + offset1,
+            r3: centerRadius - offset1,
+            r2: centerRadius - offset2,
+            r1: centerRadius - offset3
+        };
+
+        Object.keys(radii).forEach(key => {
+            valuesObj[key].radius = radii[key];
+            valuesObj[key].chord = 2 * radii[key] * Math.sin(theta);
+            valuesObj[key].arcLength = 2 * radii[key] * theta;
+            valuesObj[key].cutLength = valuesObj[key].arcLength - (1 / 12);
+        });
+
+        // Update all DOM elements
+        updateElementsFromValues(valuesObj, elementsObj);
+    }
+
+    // Function to update DOM elements from any values/elements object pair
+    function updateElementsFromValues(valuesObj, elementsObj) {
+        if (elementsObj.degree) {
+            elementsObj.degree.value = parseFloat(valuesObj.degree.toFixed(3));
+        }
+        if (elementsObj.rise) {
+            elementsObj.rise.value = inchesToFractional(valuesObj.rise, 32);
+        }
+
+        ['r1', 'r2', 'r3', 'r4', 'r5', 'r6'].forEach(layer => {
+            if (elementsObj[layer]) {
+                if (elementsObj[layer].radius) {
+                    elementsObj[layer].radius.textContent = feetToArchitectural(valuesObj[layer].radius);
+                }
+                if (elementsObj[layer].chord) {
+                    elementsObj[layer].chord.textContent = feetToArchitectural(valuesObj[layer].chord);
+                }
+                if (elementsObj[layer].arcLength) {
+                    elementsObj[layer].arcLength.textContent = feetToArchitectural(valuesObj[layer].arcLength);
+                }
+                if (elementsObj[layer].cutLength) {
+                    elementsObj[layer].cutLength.textContent = feetToArchitectural(valuesObj[layer].cutLength);
+                }
+            }
+        });
+
+        validateSpec();
+    }
+
+    function validateSpec() {
+        // Only validate if compare column is visible
+        if (!isCompareColumnVisible) {
+            return;
+        }
+
+        const tolerance = 1/8/12; // 1/8" in feet
+
+        ['r1', 'r2', 'r3', 'r4', 'r5', 'r6'].forEach(layer => {
+            const diff = Math.abs(measuredValues[layer].chord - compareValues[layer].chord);
+            const specCell = compareElements[layer].spec;
+
+            // Remove all existing spec classes
+            specCell.classList.remove('spec-pass', 'spec-fail');
+
+            // Remove old row-based classes if they exist
+            const row = document.getElementById(`compare-${layer}`);
+            if (row) {
+                row.classList.remove('table-success', 'table-danger');
+            }
+
+            // Apply pass/fail class based on tolerance
+            if (diff < tolerance) {
+                specCell.classList.add('spec-pass');
+                specCell.textContent = "✓";
+            } else {
+                specCell.classList.add('spec-fail');
+                specCell.textContent = "✗";
+            }
+        });
+    }
+
+
+    /**
+     * Converts a decimal feet value to an architectural string format (e.g., 5'-7 1/2").
+     * @param {number} feet - The length in decimal feet.
+     * @returns {string} The formatted architectural string.
+     */
+    function feetToArchitectural(feet) {
+        // var feetString = feet.toString().split('.')[0];
+        var feetString = Math.floor(feet);
+        // var inchesString = "0." + feet.toString().split('.')[1];
+        var inches = (feet - feetString) * 12;
+        var inchesString = Math.floor(inches);
+
+        var fraction = inches - inchesString;
+        var denominator = 16;
+        var numerator = Math.round(fraction * denominator); // Round to nearest 1/16 inch
+
+        while (numerator % 2 === 0 && numerator > 0) {
+            numerator /= 2;
+            denominator /= 2;
+        }
+
+        // Uncomment for debugging:
+        // console.log(`Feet: ${feetString}, Inches: ${inchesString}, Fraction: ${numerator}/${denominator} - ${fraction}`);
+        if (numerator === 0) {
+            return `${feetString}'-${inchesString}"`;
+        } else {
+            return `${feetString}'-${inchesString} ${numerator}/${denominator}"`;
+        }
+    }
+
+    function inchesToFractional(inches, denominator) {
+        if (isNaN(inches) || inches < 0) {
+            return "0";
+        }
+        var wholeInches = Math.floor(inches);
+        var fractionalPart = inches - wholeInches;
+        var numerator = Math.round(fractionalPart * denominator);
+        
+        // Reduce fraction
+        while (numerator % 2 === 0 && numerator > 0) {
+            numerator /= 2;
+            denominator /= 2;
+        }
+
+        if (numerator === 0) {
+            return `${wholeInches}"`;
+        } else if (wholeInches === 0) {
+            return `${numerator}/${denominator}"`;
+        } else {
+            return `${wholeInches} ${numerator}/${denominator}"`;
+        }
+    }
+
+
     // Call the function when the page loads
     // setDefaultValues();
     setPanelTypeDefaults(getPanelType()); // Set defaults for the initial panel type
+
+    // Initialize auto indicators
+    updateAutoIndicator('panelType');
+    updateAutoIndicator('panelLength');
+    updateAutoIndicator('gageWidth');
+    updateAutoIndicator('fieldWidth');
+    updateAutoIndicator('railSize');
+    updateAutoIndicator('fieldRubberWidth');
+    updateAutoIndicator('railHeadWidth');
+    updateAutoIndicator('gageRubberWidth');
 
     var previousPanelType;
     panelTypeSelect.addEventListener("focus", function () {
@@ -565,80 +1132,267 @@ document.addEventListener("DOMContentLoaded", function () {
     panelTypeSelect.addEventListener("change", function () {
         const newPanelType = panelTypeSelect.value;
         setPanelType(newPanelType);
-        setPanelTypeModified(false, previousPanelType);
         previousPanelType = newPanelType;
+
+        // Apply new panel defaults
+        // Auto-managed fields will update, manual fields will preserve values
         setPanelTypeDefaults(newPanelType);
+
+        // Check if any fields are in manual mode
+        const anyFieldManual = Object.keys(autoManagedFields).some(key =>
+            key !== 'panelType' && !autoManagedFields[key]
+        );
+
+        if (anyFieldManual) {
+            autoManagedFields.panelType = false;
+            updateAutoIndicator('panelType');
+        }
     });
 
     panelLengthInput.addEventListener("change", function () {
-        setPanelTypeModified(true);
+        const currentValue = parseFloat(this.value);
+
+        // Check if value differs from panel default
+        if (autoManagedFields.panelLength &&
+            isValueModifiedFromDefault('panelLength', currentValue)) {
+            setFieldManualMode('panelLength');
+        }
+
+        // Recalculate if we have a center radius
+        if (measuredValues.centerRadius) {
+            calculateAndUpdateFromCenterRadius(measuredValues.centerRadius);
+        }
     });
 
-    radio_objects.forEach(function(radio) {
-        radio.addEventListener("change", function() {
+    radio_objects.forEach(function (radio) {
+        radio.addEventListener("change", function () {
             // alert(this.value);
             setGageType(this.value);
-            setPanelTypeModified(true);
+
+            // Check if gage type differs from panel default
+            if (autoManagedFields.gageType &&
+                currentPanelDefaults.gageType &&
+                this.value !== currentPanelDefaults.gageType) {
+                setFieldManualMode('gageType');
+                // Gage type change affects gage width, so mark it as manual too
+                setFieldManualMode('gageWidth');
+            }
+
+            // Recalculate if we have a center radius
+            if (measuredValues.centerRadius) {
+                calculateAndUpdateFromCenterRadius(measuredValues.centerRadius);
+            }
         });
     });
 
     fieldWidthInput.addEventListener("change", function () {
-        setPanelTypeModified(true);
+        const currentValue = parseFloat(this.value);
+
+        // Check if value differs from panel default
+        if (autoManagedFields.fieldWidth &&
+            isValueModifiedFromDefault('fieldWidth', currentValue)) {
+            setFieldManualMode('fieldWidth');
+        }
+
+        // Recalculate if we have a center radius
+        if (measuredValues.centerRadius) {
+            calculateAndUpdateFromCenterRadius(measuredValues.centerRadius);
+        }
     });
 
-    centerRadiusInput.addEventListener("change", function () {
-        const centerRadius = parseFloat(centerRadiusInput.value);
-        const degree = radiusToDegree(centerRadius);
-        setMeasuredDegree(centerRadius);
-        setRoundedDownDegree(centerRadius);
-        setRoundedUpDegree(centerRadius);
-        // console.log(`Center Radius: ${centerRadius}, Degree: ${degree}`);
-        const downRadius = degreeToRadius(Math.floor(degree));
-        const upRadius = degreeToRadius(Math.ceil(degree));
-        setAllMeasuredRadii(centerRadius);
-        setAllMeasuredChords(centerRadius);
-        setRoundedDownRadii(downRadius);
-        setRoundedDownChords(downRadius);
-        setRoundedUpRadii(upRadius);
-        setRoundedUpChords(upRadius);
+    // Add listeners for other parameters that affect calculations
+    gageWidthInput.addEventListener("change", function () {
+        const currentValue = parseFloat(this.value);
 
-        setMeasuredRise(centerRadius);
+        // Check if value differs from panel default
+        if (autoManagedFields.gageWidth &&
+            isValueModifiedFromDefault('gageWidth', currentValue)) {
+            setFieldManualMode('gageWidth');
+        }
 
-        // Clear the input fields for High and Low Radii
-        highRadiusInput.value = "";
-        lowRadiusInput.value = "";
+        if (measuredValues.centerRadius) {
+            calculateAndUpdateFromCenterRadius(measuredValues.centerRadius);
+        }
     });
 
-    highRadiusInput.addEventListener("change", function () {
-        const highRadius = parseFloat(highRadiusInput.value);
-        
-        const centerRadius = highRadius - (getRailHeadWidth()/2 + getGageRubberWidth() + getGageWidth()/2);
-        setMeasuredDegree(centerRadius);
-        setRoundedDownDegree(centerRadius);
-        setRoundedUpDegree(centerRadius);
-        
-        setAllMeasuredRadii(centerRadius);
-        setAllMeasuredChords(centerRadius);
-        
-        centerRadiusInput.value = "";
-        lowRadiusInput.value = "";
+    fieldRubberWidthInput.addEventListener("change", function () {
+        const currentValue = parseFloat(this.value);
 
+        // Check if value differs from panel default
+        if (autoManagedFields.fieldRubberWidth &&
+            isValueModifiedFromDefault('fieldRubberWidth', currentValue)) {
+            setFieldManualMode('fieldRubberWidth');
+        }
+
+        // Recalculate if we have a center radius
+        if (measuredValues.centerRadius) {
+            calculateAndUpdateFromCenterRadius(measuredValues.centerRadius);
+        }
     });
 
-    lowRadiusInput.addEventListener("change", function () {
-        const lowRadius = parseFloat(lowRadiusInput.value);
-        
-        const centerRadius = lowRadius + (getRailHeadWidth()/2 + getGageRubberWidth() + getGageWidth()/2);
-        setMeasuredDegree(centerRadius);
-        setRoundedDownDegree(centerRadius);
-        setRoundedUpDegree(centerRadius);
-        
-        setAllMeasuredRadii(centerRadius);
-        setAllMeasuredChords(centerRadius);
-        
-        centerRadiusInput.value = "";
-        highRadiusInput.value = "";
+    gageRubberWidthInput.addEventListener("change", function () {
+        const currentValue = parseFloat(this.value);
 
+        // Check if value differs from panel default
+        if (autoManagedFields.gageRubberWidth &&
+            isValueModifiedFromDefault('gageRubberWidth', currentValue)) {
+            setFieldManualMode('gageRubberWidth');
+        }
+
+        // Recalculate if we have a center radius
+        if (measuredValues.centerRadius) {
+            calculateAndUpdateFromCenterRadius(measuredValues.centerRadius);
+        }
+    });
+
+    // Reset button listeners for auto-managed fields
+    panelTypeReset.addEventListener("click", function () {
+        resetFieldToAuto('panelType'); // Master reset - resets all fields
+    });
+
+    panelLengthReset.addEventListener("click", function () {
+        resetFieldToAuto('panelLength');
+    });
+
+    gageWidthReset.addEventListener("click", function () {
+        resetFieldToAuto('gageWidth');
+    });
+
+    fieldWidthReset.addEventListener("click", function () {
+        resetFieldToAuto('fieldWidth');
+    });
+
+    railSizeReset.addEventListener("click", function () {
+        resetFieldToAuto('railSize');
+    });
+
+    fieldRubberWidthReset.addEventListener("click", function () {
+        resetFieldToAuto('fieldRubberWidth');
+    });
+
+    railHeadWidthReset.addEventListener("click", function () {
+        resetFieldToAuto('railHeadWidth');
+    });
+
+    gageRubberWidthReset.addEventListener("click", function () {
+        resetFieldToAuto('gageRubberWidth');
+    });
+
+    measuredElements.centerRadius.addEventListener("change", function () {
+        const centerRadius = parseFloat(measuredElements.centerRadius.value);
+        if (!isNaN(centerRadius)) {
+            calculateAndUpdateFromCenterRadius(centerRadius);
+
+            // Only calculate compare if column is visible
+            if (isCompareColumnVisible) {
+                roundedDegree = Math.round(radiusToDegree(centerRadius));
+                compareCenterRadius = degreeToRadius(roundedDegree);
+                calculateAndUpdateFromCenterRadius(compareCenterRadius, compareValues, compareElements);
+            }
+
+            // Clear the input fields for High and Low Radii
+            measuredElements.highRadius.value = "";
+            measuredElements.lowRadius.value = "";
+        }
+    });
+
+    measuredElements.highRadius.addEventListener("change", function () {
+        const highRadius = parseFloat(measuredElements.highRadius.value);
+        if (!isNaN(highRadius)) {
+            const centerRadius = highRadius - (getRailHeadWidth() / 2 + getGageRubberWidth() + getGageWidth() / 2);
+            calculateAndUpdateFromCenterRadius(centerRadius);
+
+            // Only calculate compare if column is visible
+            if (isCompareColumnVisible) {
+                roundedDegree = Math.round(radiusToDegree(centerRadius));
+                compareCenterRadius = degreeToRadius(roundedDegree);
+                calculateAndUpdateFromCenterRadius(compareCenterRadius, compareValues, compareElements);
+            }
+
+            // Clear the input fields for Center and Low Radii
+            measuredElements.centerRadius.value = "";
+            measuredElements.lowRadius.value = "";
+        }
+    });
+
+    measuredElements.lowRadius.addEventListener("change", function () {
+        const lowRadius = parseFloat(measuredElements.lowRadius.value);
+        if (!isNaN(lowRadius)) {
+            const centerRadius = lowRadius + (getRailHeadWidth() / 2 + getGageRubberWidth() + getGageWidth() / 2);
+            calculateAndUpdateFromCenterRadius(centerRadius);
+
+            // Only calculate compare if column is visible
+            if (isCompareColumnVisible) {
+                roundedDegree = Math.round(radiusToDegree(centerRadius));
+                compareCenterRadius = degreeToRadius(roundedDegree);
+                calculateAndUpdateFromCenterRadius(compareCenterRadius, compareValues, compareElements);
+            }
+
+            // Update the center radius display and clear other inputs
+            measuredElements.centerRadius.value = ""
+            measuredElements.highRadius.value = "";
+        }
+    });
+
+    measuredElements.degree.addEventListener("change", function () {
+        const degree = parseFloat(measuredElements.degree.value);
+        if (!isNaN(degree)) {
+            const centerRadius = degreeToRadius(degree);
+            calculateAndUpdateFromCenterRadius(centerRadius);
+        }
+
+        // Clear the radius inputs
+        measuredElements.highRadius.value = "";
+        measuredElements.centerRadius.value = "";
+        measuredElements.lowRadius.value = "";
+    });
+
+    compareElements.degree.addEventListener("change", function () {
+        const degree = parseFloat(compareElements.degree.value);
+        if (!isNaN(degree)) {
+            const centerRadius = degreeToRadius(degree);
+            calculateAndUpdateFromCenterRadius(centerRadius, compareValues, compareElements);
+        }
+
+        // Clear the radius inputs
+        compareElements.highRadius.value = "";
+        compareElements.centerRadius.value = "";
+        compareElements.lowRadius.value = "";
+    });
+
+    compareElements.centerRadius.addEventListener("change", function () {
+        const centerRadius = parseFloat(compareElements.centerRadius.value);
+        if (!isNaN(centerRadius)) {
+            calculateAndUpdateFromCenterRadius(centerRadius, compareValues, compareElements);
+
+            // Clear the input fields for High and Low Radii
+            compareElements.highRadius.value = "";
+            compareElements.lowRadius.value = "";
+        }
+    });
+
+    compareElements.highRadius.addEventListener("change", function () {
+        const highRadius = parseFloat(compareElements.highRadius.value);
+        if (!isNaN(highRadius)) {
+            const centerRadius = highRadius - (getRailHeadWidth() / 2 + getGageRubberWidth() + getGageWidth() / 2);
+            calculateAndUpdateFromCenterRadius(centerRadius, compareValues, compareElements);
+
+            // Clear the input fields for Center and Low Radii
+            compareElements.centerRadius.value = "";
+            compareElements.lowRadius.value = "";
+        }
+    });
+
+    compareElements.lowRadius.addEventListener("change", function () {
+        const lowRadius = parseFloat(compareElements.lowRadius.value);
+        if (!isNaN(lowRadius)) {
+            const centerRadius = lowRadius + (getRailHeadWidth() / 2 + getGageRubberWidth() + getGageWidth() / 2);
+            calculateAndUpdateFromCenterRadius(centerRadius, compareValues, compareElements);
+
+            // Clear the input fields for Center and High Radii
+            compareElements.centerRadius.value = "";
+            compareElements.highRadius.value = "";
+        }
     });
 
     var previousRailSize;
@@ -647,12 +1401,81 @@ document.addEventListener("DOMContentLoaded", function () {
     });
     railSizeSelect.addEventListener("change", function () {
         const newRailSize = railSizeSelect.value;
+
+        // Check if value differs from panel default
+        if (autoManagedFields.railSize &&
+            currentPanelDefaults.railSize &&
+            newRailSize !== currentPanelDefaults.railSize) {
+            setFieldManualMode('railSize');
+        }
+
         setRailSize(newRailSize);
-        setRailSizeModified(false, previousRailSize);
         previousRailSize = newRailSize;
+
+        // Recalculate if we have a center radius
+        if (measuredValues.centerRadius) {
+            calculateAndUpdateFromCenterRadius(measuredValues.centerRadius);
+        }
     });
 
     railHeadWidthInput.addEventListener("change", function () {
-        setRailSizeModified(true);
+        const currentValue = parseFloat(this.value);
+
+        // Check if value differs from panel default
+        if (autoManagedFields.railHeadWidth &&
+            isValueModifiedFromDefault('railHeadWidth', currentValue)) {
+            setFieldManualMode('railHeadWidth');
+        }
+
+        // Recalculate if we have a center radius
+        if (measuredValues.centerRadius) {
+            calculateAndUpdateFromCenterRadius(measuredValues.centerRadius);
+        }
+    });
+
+    // Compare column toggle
+    compareColumnToggle.addEventListener('change', function() {
+        toggleCompareColumn();
+    });
+
+    // Initialize toggle state on page load
+    initializeCompareColumnToggle();
+
+    // Advanced Settings Toggle
+    const advancedSettingsToggle = document.getElementById("advancedSettingsToggle");
+    const advancedSettings = document.getElementById("advancedSettings");
+    const advancedSettingsToggleText = document.getElementById("advancedSettingsToggleText");
+    const advancedSettingsToggleIcon = document.getElementById("advancedSettingsToggleIcon");
+
+    advancedSettingsToggle.addEventListener('click', function() {
+        const isExpanded = advancedSettings.classList.contains('show');
+
+        if (isExpanded) {
+            advancedSettings.classList.remove('show');
+            advancedSettingsToggleText.textContent = "Show Advanced Settings";
+            advancedSettingsToggleIcon.textContent = "▼";
+        } else {
+            advancedSettings.classList.add('show');
+            advancedSettingsToggleText.textContent = "Hide Advanced Settings";
+            advancedSettingsToggleIcon.textContent = "▲";
+        }
+    });
+});
+
+// Color Scheme Toggle
+const selectedColorScheme = localStorage.getItem('color-scheme') || 'light dark';
+
+const applyScheme = (scheme) => {
+    localStorage.setItem('color-scheme', scheme);
+    document.documentElement.style.setProperty('color-scheme', scheme);
+    document.querySelector(`[name="color-scheme"][value="${scheme}"]`).checked = true;
+    // Tables are now fully styled via CSS light-dark(), no class changes needed
+}
+
+applyScheme(selectedColorScheme);
+
+document.querySelectorAll('[name="color-scheme"]').forEach(radio => {
+    radio.addEventListener('change', (e) => {
+        applyScheme(e.target.value);
     });
 });
