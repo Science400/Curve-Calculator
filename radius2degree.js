@@ -769,18 +769,28 @@ document.addEventListener("DOMContentLoaded", function () {
     }
 
     function validateSpec() {
+        const tolerance = 1/8/12; // 1/8" in feet
+
         ['r1', 'r2', 'r3', 'r4', 'r5', 'r6'].forEach(layer => {
-            var diff = Math.abs(measuredValues[layer].chord - compareValues[layer].chord);
-            if (diff < (1/8/12)) {
-                // If the difference is less than 1/8" add .table-success
-                document.getElementById(`compare-${layer}`).classList.add('table-success');
-                document.getElementById(`compare-${layer}`).classList.remove('table-danger');
-                compareElements[layer].spec.textContent = "✓";
+            const diff = Math.abs(measuredValues[layer].chord - compareValues[layer].chord);
+            const specCell = compareElements[layer].spec;
+
+            // Remove all existing spec classes
+            specCell.classList.remove('spec-pass', 'spec-fail');
+
+            // Remove old row-based classes if they exist
+            const row = document.getElementById(`compare-${layer}`);
+            if (row) {
+                row.classList.remove('table-success', 'table-danger');
             }
-            else {
-                document.getElementById(`compare-${layer}`).classList.add('table-danger');
-                document.getElementById(`compare-${layer}`).classList.remove('table-success');
-                compareElements[layer].spec.textContent = "✗";
+
+            // Apply pass/fail class based on tolerance
+            if (diff < tolerance) {
+                specCell.classList.add('spec-pass');
+                specCell.textContent = "✓";
+            } else {
+                specCell.classList.add('spec-fail');
+                specCell.textContent = "✗";
             }
         });
     }
@@ -1004,8 +1014,7 @@ const applyScheme = (scheme) => {
     localStorage.setItem('color-scheme', scheme);
     document.documentElement.style.setProperty('color-scheme', scheme);
     document.querySelector(`[name="color-scheme"][value="${scheme}"]`).checked = true;
-    document.getElementById('table-measured').className = `table table-${scheme} table-striped`;
-    document.getElementById('table-compare').className = `table table-${scheme} table-striped`;
+    // Tables are now fully styled via CSS light-dark(), no class changes needed
 }
 
 applyScheme(selectedColorScheme);
