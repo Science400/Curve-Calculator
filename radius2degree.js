@@ -1360,6 +1360,41 @@ document.addEventListener("DOMContentLoaded", function () {
         compareElements.lowRadius.value = "";
     });
 
+    compareElements.centerRadius.addEventListener("change", function () {
+        const centerRadius = parseFloat(compareElements.centerRadius.value);
+        if (!isNaN(centerRadius)) {
+            calculateAndUpdateFromCenterRadius(centerRadius, compareValues, compareElements);
+
+            // Clear the input fields for High and Low Radii
+            compareElements.highRadius.value = "";
+            compareElements.lowRadius.value = "";
+        }
+    });
+
+    compareElements.highRadius.addEventListener("change", function () {
+        const highRadius = parseFloat(compareElements.highRadius.value);
+        if (!isNaN(highRadius)) {
+            const centerRadius = highRadius - (getRailHeadWidth() / 2 + getGageRubberWidth() + getGageWidth() / 2);
+            calculateAndUpdateFromCenterRadius(centerRadius, compareValues, compareElements);
+
+            // Clear the input fields for Center and Low Radii
+            compareElements.centerRadius.value = "";
+            compareElements.lowRadius.value = "";
+        }
+    });
+
+    compareElements.lowRadius.addEventListener("change", function () {
+        const lowRadius = parseFloat(compareElements.lowRadius.value);
+        if (!isNaN(lowRadius)) {
+            const centerRadius = lowRadius + (getRailHeadWidth() / 2 + getGageRubberWidth() + getGageWidth() / 2);
+            calculateAndUpdateFromCenterRadius(centerRadius, compareValues, compareElements);
+
+            // Clear the input fields for Center and High Radii
+            compareElements.centerRadius.value = "";
+            compareElements.highRadius.value = "";
+        }
+    });
+
     var previousRailSize;
     railSizeSelect.addEventListener("focus", function () {
         previousRailSize = railSizeSelect.value;
