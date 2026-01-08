@@ -21,6 +21,24 @@ document.addEventListener("DOMContentLoaded", function () {
     const compareColumn = document.getElementById("compareColumn");
     const calculationsRow = compareColumn.parentElement; // The row.g-5 container
 
+    // Auto-managed field indicators
+    const panelTypeBadge = document.getElementById("panelType-badge");
+    const panelTypeReset = document.getElementById("panelType-reset");
+    const panelLengthBadge = document.getElementById("panelLength-badge");
+    const panelLengthReset = document.getElementById("panelLength-reset");
+    const gageWidthBadge = document.getElementById("gageWidth-badge");
+    const gageWidthReset = document.getElementById("gageWidth-reset");
+    const fieldWidthBadge = document.getElementById("fieldWidth-badge");
+    const fieldWidthReset = document.getElementById("fieldWidth-reset");
+    const railSizeBadge = document.getElementById("railSize-badge");
+    const railSizeReset = document.getElementById("railSize-reset");
+    const fieldRubberWidthBadge = document.getElementById("fieldRubberWidth-badge");
+    const fieldRubberWidthReset = document.getElementById("fieldRubberWidth-reset");
+    const railHeadWidthBadge = document.getElementById("railHeadWidth-badge");
+    const railHeadWidthReset = document.getElementById("railHeadWidth-reset");
+    const gageRubberWidthBadge = document.getElementById("gageRubberWidth-badge");
+    const gageRubberWidthReset = document.getElementById("gageRubberWidth-reset");
+
     const measuredElements = {
         "degree": document.getElementById("degreeOfCurve"),
         "rise": document.getElementById("measuredRise"),
@@ -205,8 +223,31 @@ document.addEventListener("DOMContentLoaded", function () {
     };
 
 
-    var railSizeModified = false;
-    var panelTypeModified = false;
+
+    // Auto-managed field state tracking
+    var autoManagedFields = {
+        panelType: true,
+        gageType: true,
+        panelLength: true,
+        gageWidth: true,
+        fieldWidth: true,
+        railSize: true,
+        fieldRubberWidth: true,
+        railHeadWidth: true,
+        gageRubberWidth: true
+    };
+
+    // Store current panel defaults for comparison
+    var currentPanelDefaults = {
+        gageType: null,
+        panelLength: null,
+        gageWidth: null,
+        fieldWidth: null,
+        railSize: null,
+        fieldRubberWidth: null,
+        railHeadWidth: null,
+        gageRubberWidth: null
+    };
 
     var theta = 0; // Initialize theta variable
     var isCompareColumnVisible = false; // Default hidden
@@ -260,29 +301,6 @@ document.addEventListener("DOMContentLoaded", function () {
         railHeadWidthInput.value = railHeadWidths[railSize].toFixed(3);
     }
 
-    function setRailSizeModified(modified, railSize) {
-        // If railSize is not provided, use the currently selected rail size
-        const targetRailSize = railSize || railSizeSelect.value;
-
-        if (modified) {
-            // Update the specified option in the select element to say (modified)
-            const selectedOption = railSizeSelect.querySelector(`option[value="${targetRailSize}"]`);
-            if (selectedOption) {
-                selectedOption.textContent = `#${targetRailSize} (modified)`;
-            }
-        }
-        else {
-            // Reset the specified option in the select element to its original text
-            const selectedOption = railSizeSelect.querySelector(`option[value="${targetRailSize}"]`);
-            if (selectedOption) {
-                selectedOption.textContent = `#${targetRailSize}`;
-            }
-        }
-
-        if (targetRailSize === railSizeSelect.value) {
-            railSizeModified = modified;
-        }
-    }
 
     // function updateRailHeadWidth() {
     //     const selectedSize = railSizeSelect.value;
@@ -347,34 +365,11 @@ document.addEventListener("DOMContentLoaded", function () {
         if (optionExists) {
             panelTypeSelect.value = panelType;
             setPanelTypeDefaults(panelType);
-            setPanelTypeModified(false, panelType);
         } else {
             console.warn(`Panel type ${panelType} does not exist in the options.`);
         }
     }
 
-    function setPanelTypeModified(modified, panelType) {
-        // If panelType is not provided, use the currently selected panel type
-        const targetPanelType = panelType || panelTypeSelect.value;
-
-        if (modified) {
-            // Update the specified option in the select element to say (modified)
-            const selectedOption = panelTypeSelect.querySelector(`option[value="${targetPanelType}"]`);
-            if (selectedOption) {
-                selectedOption.textContent = `${targetPanelType} (modified)`;
-            }
-        } else {
-            // Reset the specified option in the select element to its original text
-            const selectedOption = panelTypeSelect.querySelector(`option[value="${targetPanelType}"]`);
-            if (selectedOption) {
-                selectedOption.textContent = targetPanelType;
-            }
-        }
-
-        if (targetPanelType === panelTypeSelect.value) {
-            panelTypeModified = modified;
-        }
-    }
 
     // Gage Type
     function getGageType() {
@@ -470,35 +465,255 @@ document.addEventListener("DOMContentLoaded", function () {
         }
     }
 
+    /**
+     * Updates the visual indicator for auto-managed fields
+     * @param {string} fieldName - Field name (e.g., 'panelType', 'panelLength', 'gageWidth', etc.)
+     */
+    function updateAutoIndicator(fieldName) {
+        const isAuto = autoManagedFields[fieldName];
+        let badge, resetBtn;
+
+        // Map field names to their badge and reset button elements
+        const fieldMap = {
+            'panelType': { badge: panelTypeBadge, resetBtn: panelTypeReset },
+            'panelLength': { badge: panelLengthBadge, resetBtn: panelLengthReset },
+            'gageWidth': { badge: gageWidthBadge, resetBtn: gageWidthReset },
+            'fieldWidth': { badge: fieldWidthBadge, resetBtn: fieldWidthReset },
+            'railSize': { badge: railSizeBadge, resetBtn: railSizeReset },
+            'fieldRubberWidth': { badge: fieldRubberWidthBadge, resetBtn: fieldRubberWidthReset },
+            'railHeadWidth': { badge: railHeadWidthBadge, resetBtn: railHeadWidthReset },
+            'gageRubberWidth': { badge: gageRubberWidthBadge, resetBtn: gageRubberWidthReset }
+        };
+
+        const field = fieldMap[fieldName];
+        if (!field || !field.badge || !field.resetBtn) return;
+
+        badge = field.badge;
+        resetBtn = field.resetBtn;
+
+        if (isAuto) {
+            badge.innerHTML = '<small>Auto</small>';
+            badge.classList.remove('manual-mode');
+            resetBtn.classList.remove('visible');
+        } else {
+            badge.innerHTML = '<small>Manual</small>';
+            badge.classList.add('manual-mode');
+            resetBtn.classList.add('visible');
+        }
+    }
+
+    /**
+     * Switches a field to manual mode
+     * @param {string} fieldName - Any auto-managed field name
+     */
+    function setFieldManualMode(fieldName) {
+        if (autoManagedFields[fieldName]) {
+            autoManagedFields[fieldName] = false;
+            updateAutoIndicator(fieldName);
+
+            // Set panel type to manual mode if any setting is manually changed
+            if (fieldName !== 'panelType') {
+                autoManagedFields.panelType = false;
+                updateAutoIndicator('panelType');
+            }
+        }
+    }
+
+    /**
+     * Resets a field back to auto-managed mode
+     * @param {string} fieldName - Any auto-managed field name (or 'panelType' for master reset)
+     */
+    function resetFieldToAuto(fieldName) {
+        // Special case: Panel Type reset button resets ALL fields
+        if (fieldName === 'panelType') {
+            resetAllFieldsToAuto();
+            return;
+        }
+
+        autoManagedFields[fieldName] = true;
+        updateAutoIndicator(fieldName);
+
+        // Check if all fields are now auto - if so, reset Panel Type to auto
+        checkAndUpdatePanelTypeAuto();
+
+        // Reapply the panel default value
+        const currentPanelType = getPanelType();
+        if (panelDefaults[currentPanelType]) {
+            const defaults = panelDefaults[currentPanelType];
+
+            if (fieldName === 'gageType') {
+                const gageType = defaults.gageType || "standard";
+                setGageType(gageType);
+                currentPanelDefaults.gageType = gageType;
+            } else if (fieldName === 'panelLength' && defaults.panelLength !== undefined) {
+                setPanelLength(defaults.panelLength);
+                currentPanelDefaults.panelLength = defaults.panelLength;
+            } else if (fieldName === 'gageWidth') {
+                const gageType = defaults.gageType || "standard";
+                setGageWidth(gageType);
+                currentPanelDefaults.gageWidth = (gageType === "standard" ? 50.50 / 12 : 51.50 / 12);
+            } else if (fieldName === 'fieldWidth' && defaults.fieldWidth !== undefined) {
+                setFieldWidth(defaults.fieldWidth);
+                currentPanelDefaults.fieldWidth = defaults.fieldWidth;
+            } else if (fieldName === 'railSize' && defaults.railSize !== undefined) {
+                setRailSize(defaults.railSize);
+                currentPanelDefaults.railSize = defaults.railSize;
+            } else if (fieldName === 'fieldRubberWidth' && defaults.fieldRubberWidth !== undefined) {
+                setFieldRubberWidth(defaults.fieldRubberWidth);
+                currentPanelDefaults.fieldRubberWidth = defaults.fieldRubberWidth;
+            } else if (fieldName === 'railHeadWidth' && defaults.railSize !== undefined) {
+                setRailHeadWidth(defaults.railSize);
+                currentPanelDefaults.railHeadWidth = railHeadWidths[defaults.railSize];
+            } else if (fieldName === 'gageRubberWidth' && defaults.gageRubberWidth !== undefined) {
+                setGageRubberWidth(defaults.gageRubberWidth);
+                currentPanelDefaults.gageRubberWidth = defaults.gageRubberWidth;
+            }
+        }
+
+        // Recalculate if we have a center radius
+        if (measuredValues.centerRadius) {
+            calculateAndUpdateFromCenterRadius(measuredValues.centerRadius);
+        }
+    }
+
+    /**
+     * Resets ALL fields to auto-managed mode (master reset)
+     */
+    function resetAllFieldsToAuto() {
+        // Reset all fields to auto mode
+        for (let field in autoManagedFields) {
+            autoManagedFields[field] = true;
+        }
+
+        // Reapply all panel defaults
+        const currentPanelType = getPanelType();
+        setPanelTypeDefaults(currentPanelType);
+
+        // Update all indicators
+        updateAutoIndicator('panelType');
+        updateAutoIndicator('gageType');
+        updateAutoIndicator('panelLength');
+        updateAutoIndicator('gageWidth');
+        updateAutoIndicator('fieldWidth');
+        updateAutoIndicator('railSize');
+        updateAutoIndicator('fieldRubberWidth');
+        updateAutoIndicator('railHeadWidth');
+        updateAutoIndicator('gageRubberWidth');
+
+        // Recalculate if we have a center radius
+        if (measuredValues.centerRadius) {
+            calculateAndUpdateFromCenterRadius(measuredValues.centerRadius);
+        }
+    }
+
+    /**
+     * Checks if all non-panelType fields are in auto mode
+     * If yes, sets Panel Type back to auto mode
+     */
+    function checkAndUpdatePanelTypeAuto() {
+        const allFieldsAuto = Object.keys(autoManagedFields).every(key =>
+            key === 'panelType' || autoManagedFields[key]
+        );
+
+        if (allFieldsAuto && !autoManagedFields.panelType) {
+            autoManagedFields.panelType = true;
+            updateAutoIndicator('panelType');
+        }
+    }
+
+    /**
+     * Checks if a field value has been manually changed from panel default
+     * @param {string} fieldName - 'fieldRubberWidth' or 'gageRubberWidth'
+     * @param {number} currentValue - Current input value
+     * @returns {boolean} True if value differs from panel default
+     */
+    function isValueModifiedFromDefault(fieldName, currentValue) {
+        const defaultValue = currentPanelDefaults[fieldName];
+
+        // If no default stored yet, not modified
+        if (defaultValue === null || defaultValue === undefined) {
+            return false;
+        }
+
+        // Compare with small tolerance for floating point
+        const tolerance = 0.0001;
+        return Math.abs(currentValue - defaultValue) > tolerance;
+    }
+
 
     function setPanelTypeDefaults(panelType) {
         if (panelDefaults[panelType]) {
             const defaults = panelDefaults[panelType];
 
-            // Set gage type
+            // Set gage type (always set, not auto-managed separately)
             setGageType(defaults.gageType || "standard");
 
-            // Set panel length
-            setPanelLength(defaults.panelLength || 0);
+            // Set panel length (only if in auto mode)
+            if (autoManagedFields.panelLength) {
+                setPanelLength(defaults.panelLength || 0);
+                currentPanelDefaults.panelLength = defaults.panelLength || 0;
+            } else {
+                currentPanelDefaults.panelLength = defaults.panelLength || 0;
+            }
 
-            // Set gage width
-            // setGageWidth(defaults.gageType || 0);
+            // Set gage width (only if in auto mode)
+            if (autoManagedFields.gageWidth) {
+                setGageWidth(defaults.gageType || "standard");
+                const gageType = defaults.gageType || "standard";
+                currentPanelDefaults.gageWidth = (gageType === "standard" ? 50.50 / 12 : 51.50 / 12);
+            } else {
+                const gageType = defaults.gageType || "standard";
+                currentPanelDefaults.gageWidth = (gageType === "standard" ? 50.50 / 12 : 51.50 / 12);
+            }
 
-            // Set field width
-            setFieldWidth(defaults.fieldWidth || 0);
+            // Set field width (only if in auto mode)
+            if (autoManagedFields.fieldWidth) {
+                setFieldWidth(defaults.fieldWidth || 0);
+                currentPanelDefaults.fieldWidth = defaults.fieldWidth || 0;
+            } else {
+                currentPanelDefaults.fieldWidth = defaults.fieldWidth || 0;
+            }
 
-            // Set rail size
-            setRailSize(defaults.railSize || "133");
+            // Set rail size (only if in auto mode)
+            if (autoManagedFields.railSize) {
+                setRailSize(defaults.railSize || "133");
+                currentPanelDefaults.railSize = defaults.railSize || "133";
+            } else {
+                currentPanelDefaults.railSize = defaults.railSize || "133";
+            }
 
-            // Set field rubber width
-            setFieldRubberWidth(defaults.fieldRubberWidth || 0);
+            // Set field rubber width (only if in auto mode)
+            if (autoManagedFields.fieldRubberWidth) {
+                setFieldRubberWidth(defaults.fieldRubberWidth || 0);
+                currentPanelDefaults.fieldRubberWidth = defaults.fieldRubberWidth || 0;
+            } else {
+                currentPanelDefaults.fieldRubberWidth = defaults.fieldRubberWidth || 0;
+            }
 
-            // Set rail head width
-            setRailHeadWidth(defaults.railSize || "133");
+            // Set rail head width (only if in auto mode)
+            if (autoManagedFields.railHeadWidth) {
+                setRailHeadWidth(defaults.railSize || "133");
+                currentPanelDefaults.railHeadWidth = railHeadWidths[defaults.railSize || "133"];
+            } else {
+                currentPanelDefaults.railHeadWidth = railHeadWidths[defaults.railSize || "133"];
+            }
 
-            // Set gage rubber width
-            setGageRubberWidth(defaults.gageRubberWidth || 0);
+            // Set gage rubber width (only if in auto mode)
+            if (autoManagedFields.gageRubberWidth) {
+                setGageRubberWidth(defaults.gageRubberWidth || 0);
+                currentPanelDefaults.gageRubberWidth = defaults.gageRubberWidth || 0;
+            } else {
+                currentPanelDefaults.gageRubberWidth = defaults.gageRubberWidth || 0;
+            }
 
+            // Update visual indicators for all fields
+            updateAutoIndicator('panelLength');
+            updateAutoIndicator('gageWidth');
+            updateAutoIndicator('fieldWidth');
+            updateAutoIndicator('railSize');
+            updateAutoIndicator('fieldRubberWidth');
+            updateAutoIndicator('railHeadWidth');
+            updateAutoIndicator('gageRubberWidth');
 
         } else {
             console.warn(`No defaults found for panel type: ${panelType}`);
@@ -900,6 +1115,16 @@ document.addEventListener("DOMContentLoaded", function () {
     // setDefaultValues();
     setPanelTypeDefaults(getPanelType()); // Set defaults for the initial panel type
 
+    // Initialize auto indicators
+    updateAutoIndicator('panelType');
+    updateAutoIndicator('panelLength');
+    updateAutoIndicator('gageWidth');
+    updateAutoIndicator('fieldWidth');
+    updateAutoIndicator('railSize');
+    updateAutoIndicator('fieldRubberWidth');
+    updateAutoIndicator('railHeadWidth');
+    updateAutoIndicator('gageRubberWidth');
+
     var previousPanelType;
     panelTypeSelect.addEventListener("focus", function () {
         previousPanelType = panelTypeSelect.value;
@@ -907,13 +1132,32 @@ document.addEventListener("DOMContentLoaded", function () {
     panelTypeSelect.addEventListener("change", function () {
         const newPanelType = panelTypeSelect.value;
         setPanelType(newPanelType);
-        setPanelTypeModified(false, previousPanelType);
         previousPanelType = newPanelType;
+
+        // Apply new panel defaults
+        // Auto-managed fields will update, manual fields will preserve values
         setPanelTypeDefaults(newPanelType);
+
+        // Check if any fields are in manual mode
+        const anyFieldManual = Object.keys(autoManagedFields).some(key =>
+            key !== 'panelType' && !autoManagedFields[key]
+        );
+
+        if (anyFieldManual) {
+            autoManagedFields.panelType = false;
+            updateAutoIndicator('panelType');
+        }
     });
 
     panelLengthInput.addEventListener("change", function () {
-        setPanelTypeModified(true);
+        const currentValue = parseFloat(this.value);
+
+        // Check if value differs from panel default
+        if (autoManagedFields.panelLength &&
+            isValueModifiedFromDefault('panelLength', currentValue)) {
+            setFieldManualMode('panelLength');
+        }
+
         // Recalculate if we have a center radius
         if (measuredValues.centerRadius) {
             calculateAndUpdateFromCenterRadius(measuredValues.centerRadius);
@@ -924,7 +1168,16 @@ document.addEventListener("DOMContentLoaded", function () {
         radio.addEventListener("change", function () {
             // alert(this.value);
             setGageType(this.value);
-            setPanelTypeModified(true);
+
+            // Check if gage type differs from panel default
+            if (autoManagedFields.gageType &&
+                currentPanelDefaults.gageType &&
+                this.value !== currentPanelDefaults.gageType) {
+                setFieldManualMode('gageType');
+                // Gage type change affects gage width, so mark it as manual too
+                setFieldManualMode('gageWidth');
+            }
+
             // Recalculate if we have a center radius
             if (measuredValues.centerRadius) {
                 calculateAndUpdateFromCenterRadius(measuredValues.centerRadius);
@@ -933,7 +1186,14 @@ document.addEventListener("DOMContentLoaded", function () {
     });
 
     fieldWidthInput.addEventListener("change", function () {
-        setPanelTypeModified(true);
+        const currentValue = parseFloat(this.value);
+
+        // Check if value differs from panel default
+        if (autoManagedFields.fieldWidth &&
+            isValueModifiedFromDefault('fieldWidth', currentValue)) {
+            setFieldManualMode('fieldWidth');
+        }
+
         // Recalculate if we have a center radius
         if (measuredValues.centerRadius) {
             calculateAndUpdateFromCenterRadius(measuredValues.centerRadius);
@@ -942,21 +1202,80 @@ document.addEventListener("DOMContentLoaded", function () {
 
     // Add listeners for other parameters that affect calculations
     gageWidthInput.addEventListener("change", function () {
+        const currentValue = parseFloat(this.value);
+
+        // Check if value differs from panel default
+        if (autoManagedFields.gageWidth &&
+            isValueModifiedFromDefault('gageWidth', currentValue)) {
+            setFieldManualMode('gageWidth');
+        }
+
         if (measuredValues.centerRadius) {
             calculateAndUpdateFromCenterRadius(measuredValues.centerRadius);
         }
     });
 
     fieldRubberWidthInput.addEventListener("change", function () {
+        const currentValue = parseFloat(this.value);
+
+        // Check if value differs from panel default
+        if (autoManagedFields.fieldRubberWidth &&
+            isValueModifiedFromDefault('fieldRubberWidth', currentValue)) {
+            setFieldManualMode('fieldRubberWidth');
+        }
+
+        // Recalculate if we have a center radius
         if (measuredValues.centerRadius) {
             calculateAndUpdateFromCenterRadius(measuredValues.centerRadius);
         }
     });
 
     gageRubberWidthInput.addEventListener("change", function () {
+        const currentValue = parseFloat(this.value);
+
+        // Check if value differs from panel default
+        if (autoManagedFields.gageRubberWidth &&
+            isValueModifiedFromDefault('gageRubberWidth', currentValue)) {
+            setFieldManualMode('gageRubberWidth');
+        }
+
+        // Recalculate if we have a center radius
         if (measuredValues.centerRadius) {
             calculateAndUpdateFromCenterRadius(measuredValues.centerRadius);
         }
+    });
+
+    // Reset button listeners for auto-managed fields
+    panelTypeReset.addEventListener("click", function () {
+        resetFieldToAuto('panelType'); // Master reset - resets all fields
+    });
+
+    panelLengthReset.addEventListener("click", function () {
+        resetFieldToAuto('panelLength');
+    });
+
+    gageWidthReset.addEventListener("click", function () {
+        resetFieldToAuto('gageWidth');
+    });
+
+    fieldWidthReset.addEventListener("click", function () {
+        resetFieldToAuto('fieldWidth');
+    });
+
+    railSizeReset.addEventListener("click", function () {
+        resetFieldToAuto('railSize');
+    });
+
+    fieldRubberWidthReset.addEventListener("click", function () {
+        resetFieldToAuto('fieldRubberWidth');
+    });
+
+    railHeadWidthReset.addEventListener("click", function () {
+        resetFieldToAuto('railHeadWidth');
+    });
+
+    gageRubberWidthReset.addEventListener("click", function () {
+        resetFieldToAuto('gageRubberWidth');
     });
 
     measuredElements.centerRadius.addEventListener("change", function () {
@@ -1047,9 +1366,17 @@ document.addEventListener("DOMContentLoaded", function () {
     });
     railSizeSelect.addEventListener("change", function () {
         const newRailSize = railSizeSelect.value;
+
+        // Check if value differs from panel default
+        if (autoManagedFields.railSize &&
+            currentPanelDefaults.railSize &&
+            newRailSize !== currentPanelDefaults.railSize) {
+            setFieldManualMode('railSize');
+        }
+
         setRailSize(newRailSize);
-        setRailSizeModified(false, previousRailSize);
         previousRailSize = newRailSize;
+
         // Recalculate if we have a center radius
         if (measuredValues.centerRadius) {
             calculateAndUpdateFromCenterRadius(measuredValues.centerRadius);
@@ -1057,7 +1384,14 @@ document.addEventListener("DOMContentLoaded", function () {
     });
 
     railHeadWidthInput.addEventListener("change", function () {
-        setRailSizeModified(true);
+        const currentValue = parseFloat(this.value);
+
+        // Check if value differs from panel default
+        if (autoManagedFields.railHeadWidth &&
+            isValueModifiedFromDefault('railHeadWidth', currentValue)) {
+            setFieldManualMode('railHeadWidth');
+        }
+
         // Recalculate if we have a center radius
         if (measuredValues.centerRadius) {
             calculateAndUpdateFromCenterRadius(measuredValues.centerRadius);
@@ -1071,6 +1405,26 @@ document.addEventListener("DOMContentLoaded", function () {
 
     // Initialize toggle state on page load
     initializeCompareColumnToggle();
+
+    // Advanced Settings Toggle
+    const advancedSettingsToggle = document.getElementById("advancedSettingsToggle");
+    const advancedSettings = document.getElementById("advancedSettings");
+    const advancedSettingsToggleText = document.getElementById("advancedSettingsToggleText");
+    const advancedSettingsToggleIcon = document.getElementById("advancedSettingsToggleIcon");
+
+    advancedSettingsToggle.addEventListener('click', function() {
+        const isExpanded = advancedSettings.classList.contains('show');
+
+        if (isExpanded) {
+            advancedSettings.classList.remove('show');
+            advancedSettingsToggleText.textContent = "Show Advanced Settings";
+            advancedSettingsToggleIcon.textContent = "▼";
+        } else {
+            advancedSettings.classList.add('show');
+            advancedSettingsToggleText.textContent = "Hide Advanced Settings";
+            advancedSettingsToggleIcon.textContent = "▲";
+        }
+    });
 });
 
 // Color Scheme Toggle

@@ -175,6 +175,45 @@ input:focus, select:focus, textarea:focus {
     color: light-dark(var(--flexoki-black), var(--flexoki-base-200));
 }
 
+/* Auto-Managed Field Indicators */
+.auto-indicator {
+    background-color: light-dark(var(--flexoki-base-150), var(--flexoki-base-850));
+    color: light-dark(var(--flexoki-base-600), var(--flexoki-base-500));
+    border: 1px solid light-dark(var(--flexoki-base-200), var(--flexoki-base-800));
+    font-size: 0.75rem;
+    padding: 0.25rem 0.5rem;
+}
+
+.auto-indicator.manual-mode {
+    background-color: light-dark(rgba(32, 94, 166, 0.15), rgba(67, 133, 190, 0.15));
+    color: light-dark(var(--flexoki-blue-600), var(--flexoki-blue-400));
+    font-weight: 500;
+}
+
+.reset-to-auto {
+    font-size: 0.875rem;
+    padding: 0.25rem 0.5rem;
+    border: 1px solid light-dark(var(--flexoki-base-300), var(--flexoki-base-700));
+    visibility: hidden; /* Use visibility instead of display to maintain layout */
+}
+
+.reset-to-auto.visible {
+    visibility: visible;
+}
+
+.reset-to-auto:hover {
+    background-color: light-dark(var(--flexoki-base-150), var(--flexoki-base-850));
+    color: light-dark(var(--flexoki-blue-600), var(--flexoki-blue-400));
+}
+
+.input-group .form-control {
+    border-right: none;
+}
+
+.input-group .auto-indicator {
+    border-left: none;
+}
+
 /* Footer Theming */
 footer {
     background-color: light-dark(var(--flexoki-base-100), var(--flexoki-base-900));
@@ -252,5 +291,53 @@ h1, h2, h3, h4, h5, h6 {
     max-width: 800px;
     margin-left: auto;
     margin-right: auto;
+}
+
+/* Advanced Settings Styles */
+#advancedSettingsToggle {
+    background-color: light-dark(var(--flexoki-base-100), var(--flexoki-base-850));
+    color: light-dark(var(--flexoki-black), var(--flexoki-base-200));
+    border: 1px solid light-dark(var(--flexoki-base-300), var(--flexoki-base-700));
+    padding: 0.5rem 1rem;
+    font-size: 0.9rem;
+    transition: all 0.2s ease;
+}
+
+#advancedSettingsToggle:hover {
+    background-color: light-dark(var(--flexoki-base-150), var(--flexoki-base-800));
+    border-color: light-dark(var(--flexoki-base-500), var(--flexoki-base-600));
+}
+
+#advancedSettingsToggle:active,
+#advancedSettingsToggle:focus {
+    background-color: light-dark(var(--flexoki-base-200), var(--flexoki-base-750));
+    border-color: light-dark(var(--flexoki-base-600), var(--flexoki-base-500));
+    box-shadow: 0 0 0 0.2rem light-dark(rgba(87, 86, 83, 0.25), rgba(111, 110, 105, 0.25));
+}
+
+#advancedSettingsToggleIcon {
+    display: inline-block;
+    margin-left: 0.5rem;
+    font-size: 0.8rem;
+    transition: transform 0.3s ease;
+}
+
+#advancedSettings {
+    transition: all 0.3s ease-in-out;
+    overflow: hidden;
+    max-height: 0;
+}
+
+#advancedSettings.show {
+    max-height: 1000px;
+    padding-top: 1rem;
+}
+
+#advancedSettings h6 {
+    color: light-dark(var(--flexoki-base-700), var(--flexoki-base-300));
+    font-weight: 600;
+    text-transform: uppercase;
+    font-size: 0.85rem;
+    letter-spacing: 0.05em;
 }
 
