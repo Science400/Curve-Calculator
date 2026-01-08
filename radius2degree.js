@@ -17,6 +17,9 @@ document.addEventListener("DOMContentLoaded", function () {
     const fieldRubberWidthInput = document.getElementById("fieldRubberWidth");
     const railHeadWidthInput = document.getElementById("railHeadWidth");
     const gageRubberWidthInput = document.getElementById("gageRubberWidth");
+    const compareColumnToggle = document.getElementById("compareColumnToggle");
+    const compareColumn = document.getElementById("compareColumn");
+    const calculationsRow = compareColumn.parentElement; // The row.g-5 container
 
     const measuredElements = {
         "degree": document.getElementById("degreeOfCurve"),
@@ -206,6 +209,7 @@ document.addEventListener("DOMContentLoaded", function () {
     var panelTypeModified = false;
 
     var theta = 0; // Initialize theta variable
+    var isCompareColumnVisible = false; // Default hidden
 
 
     // Rail Head Widths
@@ -501,6 +505,43 @@ document.addEventListener("DOMContentLoaded", function () {
         }
     }
 
+    function initializeCompareColumnToggle() {
+        // Load saved state from localStorage
+        const savedState = localStorage.getItem('compare-column-visible');
+        isCompareColumnVisible = savedState === 'true'; // Default false if not set
+
+        // Set checkbox state
+        compareColumnToggle.checked = isCompareColumnVisible;
+
+        // Apply initial visibility
+        updateCompareColumnVisibility(false); // false = no animation on load
+    }
+
+    function updateCompareColumnVisibility(animate = true) {
+        if (isCompareColumnVisible) {
+            compareColumn.classList.remove('d-none');
+            calculationsRow.classList.remove('single-column');
+
+            // Recalculate compare values if we have measured data
+            if (measuredValues.centerRadius) {
+                const roundedDegree = Math.round(radiusToDegree(measuredValues.centerRadius));
+                const compareCenterRadius = degreeToRadius(roundedDegree);
+                calculateAndUpdateFromCenterRadius(compareCenterRadius, compareValues, compareElements);
+            }
+        } else {
+            compareColumn.classList.add('d-none');
+            calculationsRow.classList.add('single-column');
+        }
+
+        // Save state to localStorage
+        localStorage.setItem('compare-column-visible', isCompareColumnVisible);
+    }
+
+    function toggleCompareColumn() {
+        isCompareColumnVisible = !isCompareColumnVisible;
+        updateCompareColumnVisibility(true);
+    }
+
     function setMeasuredDegree(centerRadius) {
         const degree = 12 * (centerRadius - Math.sqrt(centerRadius * centerRadius - 961));
         measuredDegree.innerText = degree.toFixed(3);
@@ -769,6 +810,11 @@ document.addEventListener("DOMContentLoaded", function () {
     }
 
     function validateSpec() {
+        // Only validate if compare column is visible
+        if (!isCompareColumnVisible) {
+            return;
+        }
+
         const tolerance = 1/8/12; // 1/8" in feet
 
         ['r1', 'r2', 'r3', 'r4', 'r5', 'r6'].forEach(layer => {
@@ -917,9 +963,13 @@ document.addEventListener("DOMContentLoaded", function () {
         const centerRadius = parseFloat(measuredElements.centerRadius.value);
         if (!isNaN(centerRadius)) {
             calculateAndUpdateFromCenterRadius(centerRadius);
-            roundedDegree = Math.round(radiusToDegree(centerRadius));
-            compareCenterRadius = degreeToRadius(roundedDegree);
-            calculateAndUpdateFromCenterRadius(compareCenterRadius, compareValues, compareElements);
+
+            // Only calculate compare if column is visible
+            if (isCompareColumnVisible) {
+                roundedDegree = Math.round(radiusToDegree(centerRadius));
+                compareCenterRadius = degreeToRadius(roundedDegree);
+                calculateAndUpdateFromCenterRadius(compareCenterRadius, compareValues, compareElements);
+            }
 
             // Clear the input fields for High and Low Radii
             measuredElements.highRadius.value = "";
@@ -932,9 +982,13 @@ document.addEventListener("DOMContentLoaded", function () {
         if (!isNaN(highRadius)) {
             const centerRadius = highRadius - (getRailHeadWidth() / 2 + getGageRubberWidth() + getGageWidth() / 2);
             calculateAndUpdateFromCenterRadius(centerRadius);
-            roundedDegree = Math.round(radiusToDegree(centerRadius));
-            compareCenterRadius = degreeToRadius(roundedDegree);
-            calculateAndUpdateFromCenterRadius(compareCenterRadius, compareValues, compareElements);
+
+            // Only calculate compare if column is visible
+            if (isCompareColumnVisible) {
+                roundedDegree = Math.round(radiusToDegree(centerRadius));
+                compareCenterRadius = degreeToRadius(roundedDegree);
+                calculateAndUpdateFromCenterRadius(compareCenterRadius, compareValues, compareElements);
+            }
 
             // Clear the input fields for Center and Low Radii
             measuredElements.centerRadius.value = "";
@@ -947,9 +1001,13 @@ document.addEventListener("DOMContentLoaded", function () {
         if (!isNaN(lowRadius)) {
             const centerRadius = lowRadius + (getRailHeadWidth() / 2 + getGageRubberWidth() + getGageWidth() / 2);
             calculateAndUpdateFromCenterRadius(centerRadius);
-            roundedDegree = Math.round(radiusToDegree(centerRadius));
-            compareCenterRadius = degreeToRadius(roundedDegree);
-            calculateAndUpdateFromCenterRadius(compareCenterRadius, compareValues, compareElements);
+
+            // Only calculate compare if column is visible
+            if (isCompareColumnVisible) {
+                roundedDegree = Math.round(radiusToDegree(centerRadius));
+                compareCenterRadius = degreeToRadius(roundedDegree);
+                calculateAndUpdateFromCenterRadius(compareCenterRadius, compareValues, compareElements);
+            }
 
             // Update the center radius display and clear other inputs
             measuredElements.centerRadius.value = ""
@@ -1005,6 +1063,14 @@ document.addEventListener("DOMContentLoaded", function () {
             calculateAndUpdateFromCenterRadius(measuredValues.centerRadius);
         }
     });
+
+    // Compare column toggle
+    compareColumnToggle.addEventListener('change', function() {
+        toggleCompareColumn();
+    });
+
+    // Initialize toggle state on page load
+    initializeCompareColumnToggle();
 });
 
 // Color Scheme Toggle

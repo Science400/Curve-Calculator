@@ -19,6 +19,8 @@
     --flexoki-red-400: #D14D41;
     --flexoki-green-600: #66800B;
     --flexoki-green-400: #879A39;
+    --flexoki-blue-600: #205EA6;
+    --flexoki-blue-400: #4385BE;
 }
 
 body {
@@ -204,5 +206,51 @@ h1, h2, h3, h4, h5, h6 {
 
 .is-invalid {
     border-color: light-dark(#7a5a5a, #6a4a4a) !important;
+}
+
+/* Compare Column Toggle Styles */
+#compareColumnToggle {
+    cursor: pointer;
+}
+
+.form-switch .form-check-input {
+    width: 3em;
+    height: 1.5em;
+    cursor: pointer;
+    background-color: light-dark(var(--flexoki-base-300), var(--flexoki-base-700));
+    border: 2px solid light-dark(var(--flexoki-base-500), var(--flexoki-base-600));
+}
+
+.form-switch .form-check-input:focus {
+    border-color: light-dark(var(--flexoki-blue-600), var(--flexoki-blue-400));
+    box-shadow: 0 0 0 0.25rem light-dark(rgba(32, 94, 166, 0.25), rgba(67, 133, 190, 0.25));
+}
+
+.form-switch .form-check-input:checked {
+    background-color: light-dark(var(--flexoki-blue-600), var(--flexoki-blue-400));
+    border-color: light-dark(var(--flexoki-blue-600), var(--flexoki-blue-400));
+}
+
+.form-switch .form-check-label {
+    cursor: pointer;
+    user-select: none;
+    color: light-dark(var(--flexoki-black), var(--flexoki-base-200));
+    font-weight: 500;
+}
+
+/* Compare column transitions */
+#compareColumn {
+    transition: opacity 0.3s ease-in-out, transform 0.3s ease-in-out;
+}
+
+#compareColumn.d-none {
+    display: none !important;
+}
+
+/* Center measured column when compare is hidden */
+.row.g-5.single-column #measuredColumn {
+    max-width: 800px;
+    margin-left: auto;
+    margin-right: auto;
 }
 
