@@ -973,13 +973,24 @@ document.addEventListener("DOMContentLoaded", function () {
      * @returns {string} The formatted architectural string
      */
     function feetToArchitectural(feet) {
-        var feetString = Math.floor(feet);
-        var inches = (feet - feetString) * 12;
-        var inchesString = Math.floor(inches);
+        var wholeFeet = Math.floor(feet);
+        var inches = (feet - wholeFeet) * 12;
+        var wholeInches = Math.floor(inches);
 
-        var fraction = inches - inchesString;
+        var fraction = inches - wholeInches;
         var denominator = 16;
         var numerator = Math.round(fraction * denominator);
+
+        // Handle case where rounding produces a full inch
+        if (numerator >= denominator) {
+            numerator = 0;
+            wholeInches++;
+            // Handle inch overflow to feet
+            if (wholeInches >= 12) {
+                wholeInches = 0;
+                wholeFeet++;
+            }
+        }
 
         // Reduce fraction to lowest terms
         while (numerator % 2 === 0 && numerator > 0) {
@@ -988,9 +999,9 @@ document.addEventListener("DOMContentLoaded", function () {
         }
 
         if (numerator === 0) {
-            return `${feetString}'-${inchesString}"`;
+            return `${wholeFeet}'-${wholeInches}"`;
         } else {
-            return `${feetString}'-${inchesString} ${numerator}/${denominator}"`;
+            return `${wholeFeet}'-${wholeInches} ${numerator}/${denominator}"`;
         }
     }
 

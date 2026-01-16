@@ -37,14 +37,25 @@ export function feetToArchitectural(feet) {
     }
 
     // Separate whole feet and decimal portion
-    const wholeFeet = Math.floor(feet);
+    let wholeFeet = Math.floor(feet);
     const remainingInches = (feet - wholeFeet) * INCHES_PER_FOOT;
-    const wholeInches = Math.floor(remainingInches);
+    let wholeInches = Math.floor(remainingInches);
 
     // Calculate fractional part
     const fractionalInches = remainingInches - wholeInches;
     let numerator = Math.round(fractionalInches * ARCHITECTURAL_FRACTION_DENOMINATOR);
     let denominator = ARCHITECTURAL_FRACTION_DENOMINATOR;
+
+    // Handle case where rounding produces a full inch (numerator = denominator)
+    if (numerator >= denominator) {
+        numerator = 0;
+        wholeInches++;
+        // Handle inch overflow to feet
+        if (wholeInches >= INCHES_PER_FOOT) {
+            wholeInches = 0;
+            wholeFeet++;
+        }
+    }
 
     // Reduce fraction to lowest terms
     while (numerator % 2 === 0 && numerator > 0 && denominator > 1) {
