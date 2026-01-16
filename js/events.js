@@ -103,6 +103,7 @@ export function handleMeasuredRadiusChange(
 
         // Clear specified input fields
         clearInputFields(measuredElements, fieldsToClear);
+        clearInputFields(compareElements, fieldsToClear);
 
     } catch (error) {
         console.error('Measured radius change handler failed:', error);
