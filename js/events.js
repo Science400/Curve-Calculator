@@ -8,7 +8,7 @@
  */
 
 import { degreeToRadius, radiusToDegree, calculateTheta, calculateRise, calculateAllRadii, calculateAllCurveData } from './calculations.js';
-import { updateElementsFromValues, validateSpec, updateCompareColumnVisibility, clearInputFields, updateAutoIndicator } from './dom.js';
+import { updateElementsFromValues, validateSpec, updateCompareColumnVisibility, clearInputFields, updateAutoIndicator, updateAllAutoIndicators } from './dom.js';
 import { displayValidationError } from './validation.js';
 
 /**
@@ -183,7 +183,7 @@ export function setupEventListeners(state, settingsManager) {
             }
 
             // Update all auto indicators
-            updateAutoIndicator('panelType', settingsManager.isFieldAutoManaged('panelType'), autoManagedElements.panelTypeBadge);
+            updateAutoIndicator('panelType', settingsManager.isFieldAutoManaged('panelType'), autoManagedElements.panelTypeBadge, autoManagedElements.panelTypeReset);
             recalculateIfNeeded();
 
         } catch (error) {
@@ -199,8 +199,8 @@ export function setupEventListeners(state, settingsManager) {
             if (settingsManager.isFieldAutoManaged('panelLength') &&
                 settingsManager.isValueModifiedFromDefault('panelLength', currentValue)) {
                 settingsManager.setFieldManualMode('panelLength');
-                updateAutoIndicator('panelLength', false, autoManagedElements.panelLengthBadge);
-                updateAutoIndicator('panelType', settingsManager.isFieldAutoManaged('panelType'), autoManagedElements.panelTypeBadge);
+                updateAutoIndicator('panelLength', false, autoManagedElements.panelLengthBadge, autoManagedElements.panelLengthReset);
+                updateAutoIndicator('panelType', settingsManager.isFieldAutoManaged('panelType'), autoManagedElements.panelTypeBadge, autoManagedElements.panelTypeReset);
             }
 
             recalculateIfNeeded();
@@ -222,8 +222,8 @@ export function setupEventListeners(state, settingsManager) {
                     this.value !== settingsManager.currentPanelDefaults.gageType) {
                     settingsManager.setFieldManualMode('gageType');
                     settingsManager.setFieldManualMode('gageWidth');
-                    updateAutoIndicator('gageWidth', false, autoManagedElements.gageWidthBadge);
-                    updateAutoIndicator('panelType', settingsManager.isFieldAutoManaged('panelType'), autoManagedElements.panelTypeBadge);
+                    updateAutoIndicator('gageWidth', false, autoManagedElements.gageWidthBadge, autoManagedElements.gageWidthReset);
+                    updateAutoIndicator('panelType', settingsManager.isFieldAutoManaged('panelType'), autoManagedElements.panelTypeBadge, autoManagedElements.panelTypeReset);
                 }
 
                 recalculateIfNeeded();
@@ -241,8 +241,8 @@ export function setupEventListeners(state, settingsManager) {
             if (settingsManager.isFieldAutoManaged('gageWidth') &&
                 settingsManager.isValueModifiedFromDefault('gageWidth', currentValue)) {
                 settingsManager.setFieldManualMode('gageWidth');
-                updateAutoIndicator('gageWidth', false, autoManagedElements.gageWidthBadge);
-                updateAutoIndicator('panelType', settingsManager.isFieldAutoManaged('panelType'), autoManagedElements.panelTypeBadge);
+                updateAutoIndicator('gageWidth', false, autoManagedElements.gageWidthBadge, autoManagedElements.gageWidthReset);
+                updateAutoIndicator('panelType', settingsManager.isFieldAutoManaged('panelType'), autoManagedElements.panelTypeBadge, autoManagedElements.panelTypeReset);
             }
 
             recalculateIfNeeded();
@@ -259,8 +259,8 @@ export function setupEventListeners(state, settingsManager) {
             if (settingsManager.isFieldAutoManaged('fieldWidth') &&
                 settingsManager.isValueModifiedFromDefault('fieldWidth', currentValue)) {
                 settingsManager.setFieldManualMode('fieldWidth');
-                updateAutoIndicator('fieldWidth', false, autoManagedElements.fieldWidthBadge);
-                updateAutoIndicator('panelType', settingsManager.isFieldAutoManaged('panelType'), autoManagedElements.panelTypeBadge);
+                updateAutoIndicator('fieldWidth', false, autoManagedElements.fieldWidthBadge, autoManagedElements.fieldWidthReset);
+                updateAutoIndicator('panelType', settingsManager.isFieldAutoManaged('panelType'), autoManagedElements.panelTypeBadge, autoManagedElements.panelTypeReset);
             }
 
             recalculateIfNeeded();
@@ -277,8 +277,8 @@ export function setupEventListeners(state, settingsManager) {
             if (settingsManager.isFieldAutoManaged('fieldRubberWidth') &&
                 settingsManager.isValueModifiedFromDefault('fieldRubberWidth', currentValue)) {
                 settingsManager.setFieldManualMode('fieldRubberWidth');
-                updateAutoIndicator('fieldRubberWidth', false, autoManagedElements.fieldRubberWidthBadge);
-                updateAutoIndicator('panelType', settingsManager.isFieldAutoManaged('panelType'), autoManagedElements.panelTypeBadge);
+                updateAutoIndicator('fieldRubberWidth', false, autoManagedElements.fieldRubberWidthBadge, autoManagedElements.fieldRubberWidthReset);
+                updateAutoIndicator('panelType', settingsManager.isFieldAutoManaged('panelType'), autoManagedElements.panelTypeBadge, autoManagedElements.panelTypeReset);
             }
 
             recalculateIfNeeded();
@@ -295,8 +295,8 @@ export function setupEventListeners(state, settingsManager) {
             if (settingsManager.isFieldAutoManaged('gageRubberWidth') &&
                 settingsManager.isValueModifiedFromDefault('gageRubberWidth', currentValue)) {
                 settingsManager.setFieldManualMode('gageRubberWidth');
-                updateAutoIndicator('gageRubberWidth', false, autoManagedElements.gageRubberWidthBadge);
-                updateAutoIndicator('panelType', settingsManager.isFieldAutoManaged('panelType'), autoManagedElements.panelTypeBadge);
+                updateAutoIndicator('gageRubberWidth', false, autoManagedElements.gageRubberWidthBadge, autoManagedElements.gageRubberWidthReset);
+                updateAutoIndicator('panelType', settingsManager.isFieldAutoManaged('panelType'), autoManagedElements.panelTypeBadge, autoManagedElements.panelTypeReset);
             }
 
             recalculateIfNeeded();
@@ -314,8 +314,8 @@ export function setupEventListeners(state, settingsManager) {
                 settingsManager.currentPanelDefaults.railSize &&
                 newRailSize !== settingsManager.currentPanelDefaults.railSize) {
                 settingsManager.setFieldManualMode('railSize');
-                updateAutoIndicator('railSize', false, autoManagedElements.railSizeBadge);
-                updateAutoIndicator('panelType', settingsManager.isFieldAutoManaged('panelType'), autoManagedElements.panelTypeBadge);
+                updateAutoIndicator('railSize', false, autoManagedElements.railSizeBadge, autoManagedElements.railSizeReset);
+                updateAutoIndicator('panelType', settingsManager.isFieldAutoManaged('panelType'), autoManagedElements.panelTypeBadge, autoManagedElements.panelTypeReset);
             }
 
             settingsManager.setRailSize(newRailSize);
@@ -334,8 +334,8 @@ export function setupEventListeners(state, settingsManager) {
             if (settingsManager.isFieldAutoManaged('railHeadWidth') &&
                 settingsManager.isValueModifiedFromDefault('railHeadWidth', currentValue)) {
                 settingsManager.setFieldManualMode('railHeadWidth');
-                updateAutoIndicator('railHeadWidth', false, autoManagedElements.railHeadWidthBadge);
-                updateAutoIndicator('panelType', settingsManager.isFieldAutoManaged('panelType'), autoManagedElements.panelTypeBadge);
+                updateAutoIndicator('railHeadWidth', false, autoManagedElements.railHeadWidthBadge, autoManagedElements.railHeadWidthReset);
+                updateAutoIndicator('panelType', settingsManager.isFieldAutoManaged('panelType'), autoManagedElements.panelTypeBadge, autoManagedElements.panelTypeReset);
             }
 
             recalculateIfNeeded();
@@ -347,8 +347,8 @@ export function setupEventListeners(state, settingsManager) {
     // ===== Reset Button Listeners =====
     autoManagedElements.panelTypeReset.addEventListener("click", function () {
         try {
-            settingsManager.resetFieldToAuto('panelType');
-            updateAutoIndicator('panelType', true, autoManagedElements.panelTypeBadge);
+            settingsManager.resetFieldToAuto('panelType'); // Master reset - resets all fields
+            updateAllAutoIndicators(settingsManager.autoManagedFields, autoManagedElements);
             recalculateIfNeeded();
         } catch (error) {
             console.error('Panel type reset failed:', error);
@@ -358,8 +358,8 @@ export function setupEventListeners(state, settingsManager) {
     autoManagedElements.panelLengthReset.addEventListener("click", function () {
         try {
             settingsManager.resetFieldToAuto('panelLength');
-            updateAutoIndicator('panelLength', true, autoManagedElements.panelLengthBadge);
-            updateAutoIndicator('panelType', settingsManager.isFieldAutoManaged('panelType'), autoManagedElements.panelTypeBadge);
+            updateAutoIndicator('panelLength', true, autoManagedElements.panelLengthBadge, autoManagedElements.panelLengthReset);
+            updateAutoIndicator('panelType', settingsManager.isFieldAutoManaged('panelType'), autoManagedElements.panelTypeBadge, autoManagedElements.panelTypeReset);
             recalculateIfNeeded();
         } catch (error) {
             console.error('Panel length reset failed:', error);
@@ -369,8 +369,8 @@ export function setupEventListeners(state, settingsManager) {
     autoManagedElements.gageWidthReset.addEventListener("click", function () {
         try {
             settingsManager.resetFieldToAuto('gageWidth');
-            updateAutoIndicator('gageWidth', true, autoManagedElements.gageWidthBadge);
-            updateAutoIndicator('panelType', settingsManager.isFieldAutoManaged('panelType'), autoManagedElements.panelTypeBadge);
+            updateAutoIndicator('gageWidth', true, autoManagedElements.gageWidthBadge, autoManagedElements.gageWidthReset);
+            updateAutoIndicator('panelType', settingsManager.isFieldAutoManaged('panelType'), autoManagedElements.panelTypeBadge, autoManagedElements.panelTypeReset);
             recalculateIfNeeded();
         } catch (error) {
             console.error('Gage width reset failed:', error);
@@ -380,8 +380,8 @@ export function setupEventListeners(state, settingsManager) {
     autoManagedElements.fieldWidthReset.addEventListener("click", function () {
         try {
             settingsManager.resetFieldToAuto('fieldWidth');
-            updateAutoIndicator('fieldWidth', true, autoManagedElements.fieldWidthBadge);
-            updateAutoIndicator('panelType', settingsManager.isFieldAutoManaged('panelType'), autoManagedElements.panelTypeBadge);
+            updateAutoIndicator('fieldWidth', true, autoManagedElements.fieldWidthBadge, autoManagedElements.fieldWidthReset);
+            updateAutoIndicator('panelType', settingsManager.isFieldAutoManaged('panelType'), autoManagedElements.panelTypeBadge, autoManagedElements.panelTypeReset);
             recalculateIfNeeded();
         } catch (error) {
             console.error('Field width reset failed:', error);
@@ -391,8 +391,8 @@ export function setupEventListeners(state, settingsManager) {
     autoManagedElements.railSizeReset.addEventListener("click", function () {
         try {
             settingsManager.resetFieldToAuto('railSize');
-            updateAutoIndicator('railSize', true, autoManagedElements.railSizeBadge);
-            updateAutoIndicator('panelType', settingsManager.isFieldAutoManaged('panelType'), autoManagedElements.panelTypeBadge);
+            updateAutoIndicator('railSize', true, autoManagedElements.railSizeBadge, autoManagedElements.railSizeReset);
+            updateAutoIndicator('panelType', settingsManager.isFieldAutoManaged('panelType'), autoManagedElements.panelTypeBadge, autoManagedElements.panelTypeReset);
             recalculateIfNeeded();
         } catch (error) {
             console.error('Rail size reset failed:', error);
@@ -402,8 +402,8 @@ export function setupEventListeners(state, settingsManager) {
     autoManagedElements.fieldRubberWidthReset.addEventListener("click", function () {
         try {
             settingsManager.resetFieldToAuto('fieldRubberWidth');
-            updateAutoIndicator('fieldRubberWidth', true, autoManagedElements.fieldRubberWidthBadge);
-            updateAutoIndicator('panelType', settingsManager.isFieldAutoManaged('panelType'), autoManagedElements.panelTypeBadge);
+            updateAutoIndicator('fieldRubberWidth', true, autoManagedElements.fieldRubberWidthBadge, autoManagedElements.fieldRubberWidthReset);
+            updateAutoIndicator('panelType', settingsManager.isFieldAutoManaged('panelType'), autoManagedElements.panelTypeBadge, autoManagedElements.panelTypeReset);
             recalculateIfNeeded();
         } catch (error) {
             console.error('Field rubber width reset failed:', error);
@@ -413,8 +413,8 @@ export function setupEventListeners(state, settingsManager) {
     autoManagedElements.railHeadWidthReset.addEventListener("click", function () {
         try {
             settingsManager.resetFieldToAuto('railHeadWidth');
-            updateAutoIndicator('railHeadWidth', true, autoManagedElements.railHeadWidthBadge);
-            updateAutoIndicator('panelType', settingsManager.isFieldAutoManaged('panelType'), autoManagedElements.panelTypeBadge);
+            updateAutoIndicator('railHeadWidth', true, autoManagedElements.railHeadWidthBadge, autoManagedElements.railHeadWidthReset);
+            updateAutoIndicator('panelType', settingsManager.isFieldAutoManaged('panelType'), autoManagedElements.panelTypeBadge, autoManagedElements.panelTypeReset);
             recalculateIfNeeded();
         } catch (error) {
             console.error('Rail head width reset failed:', error);
@@ -424,8 +424,8 @@ export function setupEventListeners(state, settingsManager) {
     autoManagedElements.gageRubberWidthReset.addEventListener("click", function () {
         try {
             settingsManager.resetFieldToAuto('gageRubberWidth');
-            updateAutoIndicator('gageRubberWidth', true, autoManagedElements.gageRubberWidthBadge);
-            updateAutoIndicator('panelType', settingsManager.isFieldAutoManaged('panelType'), autoManagedElements.panelTypeBadge);
+            updateAutoIndicator('gageRubberWidth', true, autoManagedElements.gageRubberWidthBadge, autoManagedElements.gageRubberWidthReset);
+            updateAutoIndicator('panelType', settingsManager.isFieldAutoManaged('panelType'), autoManagedElements.panelTypeBadge, autoManagedElements.panelTypeReset);
             recalculateIfNeeded();
         } catch (error) {
             console.error('Gage rubber width reset failed:', error);

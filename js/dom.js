@@ -137,15 +137,17 @@ export function updateCompareColumnVisibility(isVisible, compareColumn, calculat
 }
 
 /**
- * Updates an auto-managed field indicator badge
+ * Updates an auto-managed field indicator badge and reset button
  *
- * Shows "Auto" badge if field is auto-managed, hides it if manual
+ * Shows "Auto" badge (gray) if field is auto-managed,
+ * or "Modified" badge (blue) with visible reset button if manually changed
  *
  * @param {string} fieldName - The field name (e.g., 'panelLength')
  * @param {boolean} isAuto - Whether the field is auto-managed
  * @param {HTMLElement} badgeElement - The badge element
+ * @param {HTMLElement} [resetBtnElement] - The reset button element
  */
-export function updateAutoIndicator(fieldName, isAuto, badgeElement) {
+export function updateAutoIndicator(fieldName, isAuto, badgeElement, resetBtnElement) {
     try {
         if (!badgeElement) {
             console.warn(`Badge element not found for ${fieldName}`);
@@ -153,10 +155,13 @@ export function updateAutoIndicator(fieldName, isAuto, badgeElement) {
         }
 
         if (isAuto) {
-            badgeElement.classList.remove('d-none');
             badgeElement.textContent = 'Auto';
+            badgeElement.classList.remove('manual-mode');
+            if (resetBtnElement) resetBtnElement.classList.remove('visible');
         } else {
-            badgeElement.classList.add('d-none');
+            badgeElement.textContent = 'Manual';
+            badgeElement.classList.add('manual-mode');
+            if (resetBtnElement) resetBtnElement.classList.add('visible');
         }
     } catch (error) {
         console.error(`Failed to update auto indicator for ${fieldName}:`, error);
@@ -184,7 +189,8 @@ export function updateAllAutoIndicators(autoManagedFields, autoManagedElements) 
     fields.forEach(field => {
         const isAuto = autoManagedFields[field];
         const badgeElement = autoManagedElements[`${field}Badge`];
-        updateAutoIndicator(field, isAuto, badgeElement);
+        const resetBtnElement = autoManagedElements[`${field}Reset`];
+        updateAutoIndicator(field, isAuto, badgeElement, resetBtnElement);
     });
 }
 

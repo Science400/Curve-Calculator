@@ -202,8 +202,18 @@ input:focus, select:focus, textarea:focus {
     background-color: light-dark(var(--flexoki-base-150), var(--flexoki-base-850));
     color: light-dark(var(--flexoki-base-600), var(--flexoki-base-500));
     border: 1px solid light-dark(var(--flexoki-base-200), var(--flexoki-base-800));
-    font-size: 0.75rem;
-    padding: 0.25rem 0.5rem;
+    font-size: 0.7rem;
+    padding: 0.25rem 0.4rem;
+    width: 3.5rem;
+    text-align: center;
+    justify-content: center;
+    flex-shrink: 0;
+}
+
+/* Badge gets rounded right corners when reset button is hidden */
+.input-group .auto-indicator:has(+ .reset-to-auto:not(.visible)) {
+    border-top-right-radius: var(--bs-border-radius) !important;
+    border-bottom-right-radius: var(--bs-border-radius) !important;
 }
 
 .auto-indicator.manual-mode {
