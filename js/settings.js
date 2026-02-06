@@ -158,8 +158,9 @@ export class SettingsManager {
             return false;
         }
 
-        const width = gageType === GAGE_TYPE_STANDARD ? STANDARD_GAGE_WIDTH_FEET : PEDESTRIAN_GAGE_WIDTH_FEET;
-        return setNumericInputValue(this.inputElements.gageWidthInput, width, 3);
+        // Assign full precision directly (not through toFixed) to match pre-refactor behavior
+        this.inputElements.gageWidthInput.value = gageType === GAGE_TYPE_STANDARD ? STANDARD_GAGE_WIDTH_FEET : PEDESTRIAN_GAGE_WIDTH_FEET;
+        return true;
     }
 
     // ===== Field Width =====

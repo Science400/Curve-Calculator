@@ -7,7 +7,7 @@
  * @module dom
  */
 
-import { RADIUS_LAYERS, CHORD_TOLERANCE_FEET, DECIMAL_PRECISION_DISPLAY } from './constants.js';
+import { RADIUS_LAYERS, CHORD_TOLERANCE_FEET, DECIMAL_PRECISION_DISPLAY, DEBUG_MODE } from './constants.js';
 import { feetToArchitectural, inchesToFractional } from './formatting.js';
 
 /**
@@ -25,6 +25,10 @@ import { feetToArchitectural, inchesToFractional } from './formatting.js';
  */
 export function updateElementsFromValues(valuesObj, elementsObj) {
     try {
+        if (DEBUG_MODE) {
+            console.log('Curve Values (decimal feet):', valuesObj);
+        }
+
         // Update degree input
         if (elementsObj.degree && valuesObj.degree != null) {
             elementsObj.degree.value = parseFloat(valuesObj.degree.toFixed(DECIMAL_PRECISION_DISPLAY));
@@ -91,7 +95,7 @@ export function validateSpec(measuredValues, compareValues, compareElements) {
             // Clear previous classes
             specCell.classList.remove('spec-pass', 'spec-fail');
 
-            if (difference <= CHORD_TOLERANCE_FEET) {
+            if (difference < CHORD_TOLERANCE_FEET) {
                 specCell.classList.add('spec-pass');
                 specCell.textContent = "✓";
             } else {

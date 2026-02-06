@@ -88,13 +88,13 @@ export function feetToArchitectural(feet) {
  * inchesToFractional(5.5, 16);    // "5 8/16""
  * inchesToFractional(0, 32);      // "0"
  */
-export function inchesToFractional(inches, denominator) {
+export function inchesToFractional(inches, denominatorParam) {
     if (typeof inches !== 'number' || isNaN(inches)) {
         throw new Error(`Invalid inches value: must be a number (got: ${inches})`);
     }
 
-    if (typeof denominator !== 'number' || !Number.isInteger(denominator) || denominator <= 0) {
-        throw new Error(`Invalid denominator: must be a positive integer (got: ${denominator})`);
+    if (typeof denominatorParam !== 'number' || !Number.isInteger(denominatorParam) || denominatorParam <= 0) {
+        throw new Error(`Invalid denominator: must be a positive integer (got: ${denominatorParam})`);
     }
 
     // Handle negative or zero values
@@ -107,9 +107,16 @@ export function inchesToFractional(inches, denominator) {
     }
 
     // Separate whole inches and fractional part
+    let denominator = denominatorParam;
     const wholeInches = Math.floor(inches);
     const fractionalPart = inches - wholeInches;
-    const numerator = Math.round(fractionalPart * denominator);
+    let numerator = Math.round(fractionalPart * denominator);
+
+    // Reduce fraction to lowest terms
+    while (numerator % 2 === 0 && numerator > 0) {
+        numerator /= 2;
+        denominator /= 2;
+    }
 
     // Format based on whole and fractional parts
     if (numerator === 0 && wholeInches === 0) {

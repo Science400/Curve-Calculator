@@ -51,8 +51,9 @@ export function calculateAndUpdateFromCenterRadius(centerRadius, valuesObj, elem
         valuesObj.degree = degree;
         valuesObj.rise = rise;
         valuesObj.centerRadius = centerRadius;
-        valuesObj.highRadius = radii.r4;
-        valuesObj.lowRadius = radii.r3;
+        const radiusOffset = settingsManager.getRadiusOffset();
+        valuesObj.highRadius = centerRadius + radiusOffset;
+        valuesObj.lowRadius = centerRadius - radiusOffset;
 
         // Copy curve data to values object
         ['r1', 'r2', 'r3', 'r4', 'r5', 'r6'].forEach(layer => {
@@ -155,6 +156,11 @@ export function setupEventListeners(state, settingsManager) {
                 measuredElements,
                 settingsManager
             );
+
+            // Re-validate spec if compare column is visible and has data
+            if (state.isCompareColumnVisible && compareValues.centerRadius) {
+                validateSpec(measuredValues, compareValues, compareElements);
+            }
         }
     };
 
@@ -524,6 +530,7 @@ export function setupEventListeners(state, settingsManager) {
             const centerRadius = parseFloat(this.value);
             if (!isNaN(centerRadius)) {
                 handleCompareRadiusChange(centerRadius, compareElements, compareValues, ['highRadius', 'lowRadius'], settingsManager);
+                validateSpec(measuredValues, compareValues, compareElements);
             }
         } catch (error) {
             console.error('Compare center radius change failed:', error);
@@ -537,6 +544,7 @@ export function setupEventListeners(state, settingsManager) {
             if (!isNaN(highRadius)) {
                 const centerRadius = highRadius - settingsManager.getRadiusOffset();
                 handleCompareRadiusChange(centerRadius, compareElements, compareValues, ['centerRadius', 'lowRadius'], settingsManager);
+                validateSpec(measuredValues, compareValues, compareElements);
             }
         } catch (error) {
             console.error('Compare high radius change failed:', error);
@@ -550,6 +558,7 @@ export function setupEventListeners(state, settingsManager) {
             if (!isNaN(lowRadius)) {
                 const centerRadius = lowRadius + settingsManager.getRadiusOffset();
                 handleCompareRadiusChange(centerRadius, compareElements, compareValues, ['centerRadius', 'highRadius'], settingsManager);
+                validateSpec(measuredValues, compareValues, compareElements);
             }
         } catch (error) {
             console.error('Compare low radius change failed:', error);
@@ -564,6 +573,7 @@ export function setupEventListeners(state, settingsManager) {
             if (!isNaN(degree)) {
                 const centerRadius = degreeToRadius(degree);
                 calculateAndUpdateFromCenterRadius(centerRadius, compareValues, compareElements, settingsManager);
+                validateSpec(measuredValues, compareValues, compareElements);
             }
 
             // Clear the radius inputs
