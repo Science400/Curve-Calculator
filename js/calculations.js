@@ -242,12 +242,12 @@ export function calculateAllRadii(centerRadius, offset1, offset2, offset3) {
     }
 
     return {
-        r1: centerRadius - offset1,       // Innermost (gage side - half gage width)
+        r1: centerRadius - offset3,       // Innermost (low side)
         r2: centerRadius - offset2,       // Inner field side
-        r3: centerRadius - offset3,       // Outermost field side (low side)
-        r4: centerRadius + offset1,       // Outer gage side (high side)
+        r3: centerRadius - offset1,       // Inner gage side
+        r4: centerRadius + offset1,       // Outer gage side
         r5: centerRadius + offset2,       // Outer field side
-        r6: centerRadius + offset3        // Outermost (field side + full width)
+        r6: centerRadius + offset3        // Outermost (high side)
     };
 }
 

@@ -139,13 +139,36 @@ input:focus, select:focus, textarea:focus {
     color: light-dark(var(--flexoki-black), var(--flexoki-base-200));
 }
 
+/* Fixed table layout for consistent column widths */
+#table-measured,
+#table-compare {
+    table-layout: fixed;
+    width: 100%;
+}
+
+/* Column width definitions - columns: Label, Radius, Chord, Arc(hidden), Cut Length, Spec */
+#table-measured col:nth-child(1),
+#table-compare col:nth-child(1) { width: 10%; }  /* Label (R1-R6) */
+
+#table-measured col:nth-child(2),
+#table-compare col:nth-child(2) { width: 28%; }  /* Radius */
+
+#table-measured col:nth-child(3),
+#table-compare col:nth-child(3) { width: 24%; }  /* Chord */
+
+/* nth-child(4) is Arc Length - hidden with d-none */
+
+#table-measured col:nth-child(5),
+#table-compare col:nth-child(5) { width: 26%; }  /* Cut Length */
+
+#table-compare col:nth-child(6) { width: 12%; }  /* Spec (compare only) */
+
 /* Spec Cell Status Colors with Flexoki Accents */
 .spec-pass {
     background-color: light-dark(rgba(102, 128, 11, 0.15), rgba(135, 154, 57, 0.15)) !important;
     color: light-dark(var(--flexoki-green-600), var(--flexoki-green-400)) !important;
     font-weight: bold;
     text-align: center;
-    font-size: 1.1rem;
 }
 
 .spec-fail {
@@ -153,7 +176,6 @@ input:focus, select:focus, textarea:focus {
     color: light-dark(var(--flexoki-red-600), var(--flexoki-red-400)) !important;
     font-weight: bold;
     text-align: center;
-    font-size: 1.1rem;
 }
 
 /* Form Elements */

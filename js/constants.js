@@ -222,3 +222,12 @@ export const MIN_GAGE_WIDTH_FEET = 3;
  * @constant {number}
  */
 export const MAX_GAGE_WIDTH_FEET = 6;
+
+// ===== Debug Configuration =====
+
+/**
+ * Enable debug mode to log calculated values in decimal feet to console
+ * Set to false for production
+ * @constant {boolean}
+ */
+export const DEBUG_MODE = true;
