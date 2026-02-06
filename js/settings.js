@@ -10,6 +10,8 @@
 import {
     STANDARD_GAGE_WIDTH_FEET,
     PEDESTRIAN_GAGE_WIDTH_FEET,
+    STANDARD_GAGE_RUBBER_WIDTH_FEET,
+    PEDESTRIAN_GAGE_RUBBER_WIDTH_FEET,
     GAGE_TYPE_STANDARD,
     GAGE_TYPE_PEDESTRIAN,
     FLOAT_COMPARISON_EPSILON
@@ -120,6 +122,13 @@ export class SettingsManager {
         }
 
         this.setGageWidth(gageType);
+
+        // Update gage rubber width to match gage type (only if still auto-managed)
+        if (this.autoManagedFields.gageRubberWidth) {
+            const rubberWidth = gageType === GAGE_TYPE_PEDESTRIAN ? PEDESTRIAN_GAGE_RUBBER_WIDTH_FEET : STANDARD_GAGE_RUBBER_WIDTH_FEET;
+            this.setGageRubberWidth(rubberWidth);
+        }
+
         return true;
     }
 

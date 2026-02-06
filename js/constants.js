@@ -47,6 +47,18 @@ export const STANDARD_GAGE_WIDTH_FEET = STANDARD_GAGE_WIDTH_INCHES / INCHES_PER_
  */
 export const PEDESTRIAN_GAGE_WIDTH_FEET = PEDESTRIAN_GAGE_WIDTH_INCHES / INCHES_PER_FOOT;
 
+/**
+ * Standard gage rubber width in feet (3 inches)
+ * @constant {number}
+ */
+export const STANDARD_GAGE_RUBBER_WIDTH_FEET = 3 / INCHES_PER_FOOT;
+
+/**
+ * Pedestrian gage rubber width in feet (2.5 inches)
+ * @constant {number}
+ */
+export const PEDESTRIAN_GAGE_RUBBER_WIDTH_FEET = 2.5 / INCHES_PER_FOOT;
+
 // ===== Railroad Curve Constants =====
 
 /**

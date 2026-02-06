@@ -8,6 +8,7 @@
  */
 
 import { degreeToRadius, radiusToDegree, calculateTheta, calculateRise, calculateAllRadii, calculateAllCurveData } from './calculations.js';
+import { GAGE_TYPE_PEDESTRIAN, STANDARD_GAGE_RUBBER_WIDTH_FEET, PEDESTRIAN_GAGE_RUBBER_WIDTH_FEET } from './constants.js';
 import { updateElementsFromValues, validateSpec, updateCompareColumnVisibility, clearInputFields, updateAutoIndicator, updateAllAutoIndicators } from './dom.js';
 import { displayValidationError } from './validation.js';
 
@@ -225,6 +226,10 @@ export function setupEventListeners(state, settingsManager) {
                     updateAutoIndicator('gageWidth', false, autoManagedElements.gageWidthBadge, autoManagedElements.gageWidthReset);
                     updateAutoIndicator('panelType', settingsManager.isFieldAutoManaged('panelType'), autoManagedElements.panelTypeBadge, autoManagedElements.panelTypeReset);
                 }
+
+                // Update the gage rubber width default to match gage type
+                // so isValueModifiedFromDefault compares against the correct reference
+                settingsManager.currentPanelDefaults.gageRubberWidth = this.value === GAGE_TYPE_PEDESTRIAN ? PEDESTRIAN_GAGE_RUBBER_WIDTH_FEET : STANDARD_GAGE_RUBBER_WIDTH_FEET;
 
                 recalculateIfNeeded();
             } catch (error) {
